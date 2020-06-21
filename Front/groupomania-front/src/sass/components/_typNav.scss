@@ -1,0 +1,17 @@
+@media all and (max-width: 980px) {
+    nav{
+        .menu{
+            &__btn{
+                .open {
+                    font-family: 'nevis';
+                    text-transform: uppercase;
+                }
+            }
+            &__list{
+                a {
+                    color: #000;
+                }
+            }
+        }
+    }
+}

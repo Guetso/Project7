@@ -1,18 +1,25 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="home" v-bind:title="message">
+    <router-link :to="{ name: 'Login' }">Login</router-link>
+    <router-link :to="{ name: 'Signup' }">Signup</router-link>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+//import Header from "@/components/Header.vue";
 
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
+  name: "Home",
+  /* components: {
+    Header
+  } */
+  data: function() {
+    return { message: "Page d'accueil" };
   }
-}
+};
 </script>
+
+<style lang="scss">
+@import "../sass/main";
+</style>

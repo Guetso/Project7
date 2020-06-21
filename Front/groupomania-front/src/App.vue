@@ -1,12 +1,21 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <Nav></Nav>
+    <Header title="Bienvenue dans votre espace Groupomania"></Header>
+    <router-view />
   </div>
 </template>
+
+<script>
+import Nav from "./components/Nav.vue";
+import Header from "./components/Header.vue";
+export default {
+  components: {
+    Nav,
+    Header
+  }
+};
+</script>
 
 <style lang="scss">
 #app {
@@ -15,6 +24,9 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  border: solid 2px red;
+  padding: 5px;
+  height: 100vh;
 }
 
 #nav {
@@ -30,3 +42,4 @@
   }
 }
 </style>
+

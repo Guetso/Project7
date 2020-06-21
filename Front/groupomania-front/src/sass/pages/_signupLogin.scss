@@ -1,0 +1,14 @@
+#Signup,
+#Login {
+    /* border: solid green; */
+    display: flex;
+    flex-direction: column;
+    h2 {
+        border: solid;
+    }
+    .signupForm,
+    .loginForm {
+        display: flex;
+        flex-direction: column;
+    }
+}
