@@ -6,7 +6,7 @@ Ce projet est réalisé dans le cadre du parcours **Développeur Web** du site [
 ![Logo Groupomania](Front/groupomania-front/src/assets/Groupomania_Logos/small-logo.png)
 
 ### Documentations
-* [Note de cadrage](docs/Groupomania_Specs_FR_DWJ_VF.pdf)
+* [Note de cadrage](z-docs/Groupomania_Specs_FR_DWJ_VF.pdf)
 
 ### Technologies utilisées
 * 
