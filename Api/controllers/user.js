@@ -1,18 +1,17 @@
-const bcrypt = require('bcrypt')
+const mysql = require('mysql')
+const mysqlConfig = require('../config/mysqlConfig')
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'guetso',
+  password: mysqlConfig.secret,
+  database: 'groupomania',
+})
 
 exports.signup = (req, res, next) => {
-    // Pour la création d'un nouvel utilisateur
-    bcrypt
-      .hash(req.body.password, 10)
-      .then((hash) => {
-        const user = new User({
-          email: req.body.email,
-          password: hash,
-        })
-        user
-          .save()
-          .then(() => res.status(201).json({ message: 'Utilisateur créé ! ' }))
-          .catch((error) => res.status(400).json({ error }))
-      })
-      .catch((error) => res.status(500).json({ error }))
-  }
+  const user = req.body.user
+
+  connection.query('INSERT INTO users SET ?', user, function (error, results, fields) {
+    if (error) throw error
+    return res.status(201).send({data: results, message: 'New user created !'})
+  })
+}
