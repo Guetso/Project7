@@ -2,7 +2,7 @@
   <div id="Signup">
     <h2>{{ title }}</h2>
 
-    <form class="signupForm" @submit="submitForm">
+    <form class="signupForm" @submit="submitForm" v-if="!show">
       <label for="email">E-mail:</label>
       <input type="text" name="email" v-model="formData.user.email" placeholder="Email" />
 
@@ -14,11 +14,19 @@
 
       <button type="submit">Valider</button>
     </form>
+
+    <aside class="messageService" v-if="feedbacks.length">
+      
+      <ul>
+        <li v-for="feedback in feedbacks" :key="feedback.message"> {{ feedback.message }}</li>
+      </ul>
+    
+    </aside>
+    
   </div>
 </template>
 
 <script>
-
 const post = function(url, toSend) {
   return new Promise(function(resolve, reject) {
     const httpRequest = new XMLHttpRequest();
@@ -46,16 +54,20 @@ export default {
       title: "Signup",
       formData: {
         user: { email: null, userName: null, password: null, isAdmin: 0 }
-      }
+      },
+      feedbacks: [],
+      show: false
     };
   },
   methods: {
     submitForm: function(e) {
       e.preventDefault();
-      console.log(JSON.stringify(this.formData));
-      post('http://localhost:3000/api/auth/signup',this.formData)
-      .then(console.log('Ok'))
-      .catch(error=>console.log(error))
+      post("http://localhost:3000/api/auth/signup", this.formData)
+        .then(
+          (this.show = true),
+          this.feedbacks.push({message:"Bienvenue ! Vous pouvez vous connecter"})
+        )
+        .catch(error => console.log(error));
     }
   }
 };
