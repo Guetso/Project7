@@ -59,25 +59,8 @@
 </template>
 
 <script>
-const post = function(url, toSend) {
-  return new Promise(function(resolve, reject) {
-    const httpRequest = new XMLHttpRequest();
-    httpRequest.onreadystatechange = function() {
-      if (httpRequest.readyState === 4) {
-        if (httpRequest.status === 201) {
-          const response = JSON.parse(this.responseText);
-          console.log(response);
-          resolve(response);
-        } else {
-          reject(httpRequest);
-        }
-      }
-    };
-    httpRequest.open("POST", url, true);
-    httpRequest.setRequestHeader("Content-Type", "application/json");
-    httpRequest.send(JSON.stringify(toSend));
-  });
-};
+
+const xhr = require("../js/xhr");
 
 export default {
   name: "Signup",
@@ -95,7 +78,7 @@ export default {
     submitForm: function(e) {
       // lorsque le bouton de validation du formulaire est cliqué :
       e.preventDefault(); // On bloque la redirection
-      post("http://localhost:3000/api/auth/signup", this.formData) // On appelle la fonction POST (requête XHR), Cette fonction renvoie une promesse
+      xhr.post('api/auth/signup', 201, this.formData) // On appelle la fonction POST (requête XHR), Cette fonction renvoie une promesse
         .then(response => {
           // En cas de réussite de la requête (resolve), la fonction nous renvoie la réponse du serveur
           this.show = false; // On cache le formulaire

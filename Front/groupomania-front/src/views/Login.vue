@@ -24,34 +24,15 @@
 
     <div class="messageService" v-if="feedbacks.length">
       <ul>
-        <p v-for="feedback in feedbacks" :key="feedback.message">
-          {{ feedback.message }}
-        </p>
+        <p v-for="feedback in feedbacks" :key="feedback.message">{{ feedback.message }}</p>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-const post = function(url, toSend) {
-  return new Promise(function(resolve, reject) {
-    const httpRequest = new XMLHttpRequest();
-    httpRequest.onreadystatechange = function() {
-      if (httpRequest.readyState === 4) {
-        if (httpRequest.status === 200) {
-          const response = JSON.parse(this.responseText);
-          console.log(response);
-          resolve(response);
-        } else {
-          reject(httpRequest);
-        }
-      }
-    };
-    httpRequest.open("POST", url, true);
-    httpRequest.setRequestHeader("Content-Type", "application/json");
-    httpRequest.send(JSON.stringify(toSend));
-  });
-};
+const xhr = require("../js/xhr");
+
 export default {
   name: "Login",
   data: function() {
@@ -68,7 +49,8 @@ export default {
     submitForm: function(e) {
       // lorsque le bouton de validation du formulaire est cliqué :
       e.preventDefault(); // On bloque la redirection
-      post("http://localhost:3000/api/auth/login", this.formData) // On appelle la fonction POST (requête XHR), Cette fonction renvoie une promesse
+      xhr
+        .post("api/auth/login", 200, this.formData) // On appelle la fonction POST (requête XHR), Cette fonction renvoie une promesse
         .then(response => {
           // En cas de réussite de la requête (resolve), la fonction nous renvoie la réponse du serveur
           this.show = false; // On cache le formulaire
@@ -79,12 +61,12 @@ export default {
         })
         .catch(error => {
           // En cas d'échec de la requête
-          const serverMessage = JSON.parse(error.responseText)
+          const serverMessage = JSON.parse(error.responseText);
           this.show = false; //  On cache le formulaire
           console.error(serverMessage.message); // La console renvoie la réponse de l'erreur
           this.feedbacks.push({
             message: serverMessage.message
-          })
+          });
         });
     }
   }
