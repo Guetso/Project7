@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
-import Logged from '../views/Logged.vue'
+import Wall from '../views/Wall.vue'
 import About from '../views/About.vue'
 
 Vue.use(VueRouter)
@@ -25,9 +25,9 @@ Vue.use(VueRouter)
     component: Signup
   },
   {
-    path: '/logged',
-    name: 'Logged',
-    component: Logged
+    path: '/wall',
+    name: 'Wall',
+    component: Wall
   },
   {
     path: '/about',
