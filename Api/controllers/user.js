@@ -2,7 +2,7 @@ const conn = require('../mysqlConfig')
 const bcrypt = require('bcrypt')
 
 exports.signup = (req, res, next) => {
-  let user = req.body.user
+  const user = req.body.user
   bcrypt.hash(user.password, 10).then((hash) => {
     user.password = hash
     conn.query('INSERT INTO users SET ?', user, function (
@@ -16,8 +16,41 @@ exports.signup = (req, res, next) => {
         return res.status(400).json(error.sqlMessage)
       } // Et retourne uniquement le message de l'erreur au front
       return res.status(201).json({
-        message: 'Bienvenue ! Vous pouvez maintenant vous connecter.',
+        message:
+          'Votre compte a bien été créé ! Vous pouvez maintenant vous connecter.'
       })
     })
   })
+}
+
+exports.login = (req, res, next) => {
+  const userReq = req.body.user.userName
+  const passReq = req.body.user.password
+  if (userReq && passReq) {
+    conn.query(
+      'SELECT * FROM groupomania.users WHERE username= ?',
+      userReq,
+      function (_error, results, _fields) {
+        if (results.length > 0) {
+          bcrypt.compare(passReq, results[0].password).then((valid) => {
+            if (!valid) {
+              res
+                .status(401)
+                .json({ message: 'Utilisateur ou mot de passe inconnu' })
+            } else {
+              res.status(200).json({ message: 'Bienvenue dans votre espace !' })
+            }
+          })
+        } else {
+          res
+            .status(401)
+            .json({ message: 'Utilisateur ou mot de passe inconnu' })
+        }
+      }
+    )
+  } else {
+    res
+      .status(500)
+      .json({ message: "Entrez un nom d'utilisateur et un mot de passe" })
+  }
 }

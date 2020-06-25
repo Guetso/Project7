@@ -5,7 +5,7 @@ const conn = mysql.createConnection({
   host: 'localhost',
   user: 'guetso',
   password: mysqlConfig.secret,
-  database: 'groupomania',
+  database: 'groupomania'
 })
 
 conn.connect(function (err) {
@@ -16,4 +16,4 @@ conn.connect(function (err) {
   console.log('connected as id ' + conn.threadId)
 })
 
-module.exports = conn;
+module.exports = conn
