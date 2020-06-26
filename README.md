@@ -9,10 +9,13 @@ Ce projet est réalisé dans le cadre du parcours **Développeur Web** du site [
 * [Note de cadrage](z-docs/Groupomania_Specs_FR_DWJ_VF.pdf)
 
 ### Technologies utilisées
-* 
-* 
-* 
-* 
+* Back
+    * NodeJS
+    * Express
+    * mySql
+* Front
+    * Vue.js 
+    * Sass
 
 ### Objectifs de la mission
 Le projet consiste à construire un réseau social interne pour les employés de Groupomania. Le but de cet outil est de faciliter les interactions entre collègues. Le département RH de Groupomania a laissé libre cours à son imagination pour les fonctionnalités du réseau et a imaginé plusieurs briques pour favoriser les échanges entre collègues.
@@ -24,5 +27,8 @@ Le projet consiste à construire un réseau social interne pour les employés de
 * Authentifier un utilisateur et maintenir sa session
 
 ### Serveur de développement 
+Pour lancer le serveur de développement
 
--- README UNDER CONSTRUCTION --
+* Back
+    ``` cd api
+    ``` nodemon server
