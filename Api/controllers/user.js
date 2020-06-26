@@ -1,5 +1,7 @@
 const conn = require('../mysqlConfig')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const jwtSecret = require('../config/jwt.secret')
 
 exports.signup = (req, res, next) => {
   const user = req.body.user
@@ -38,7 +40,15 @@ exports.login = (req, res, next) => {
                 .status(401)
                 .json({ message: 'Utilisateur ou mot de passe inconnu' })
             } else {
-              res.status(200).json({ message: 'Bienvenue dans votre espace !' })
+              res.status(200).json({
+                message: 'Bienvenue dans votre espace !',
+                userId: results[0].idUSERS,
+                token: jwt.sign(
+                  { userId: results[0].idUSERS },
+                  jwtSecret.secret,
+                  { expiresIn: '24h' }
+                )
+              })
             }
           })
         } else {
