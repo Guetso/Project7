@@ -1,7 +1,7 @@
 <template>
   <div id="Login">
     <h2>{{ title }}</h2>
-    <form class="loginForm" @submit.prevent="submitForm" v-if="show">
+    <form class="loginForm" @submit.prevent="login" v-if="show">
       <label for="userName">Nom d'utilisateur:</label>
       <input
         type="text"
@@ -31,11 +31,11 @@
 </template>
 
 <script>
-const axios = require("axios");
+import { AUTH_REQUEST } from "../store/actions/auth";
 
 export default {
   name: "Login",
-  data: function() {
+  data() {
     return {
       title: "Login",
       formData: {
@@ -46,22 +46,11 @@ export default {
     };
   },
   methods: {
-    submitForm(e) {
-      // lorsque le bouton de validation du formulaire est cliqué :
-      e.preventDefault(); // On bloque la redirection
-      axios({
-        method: "post",
-        url: "http://localhost:3000/api/auth/login",
-        data: this.formData
-      })
-        .then(response => {
-          console.log(response);
-          this.$router.push("/wall");
-        })
-        .catch(error => {
-          console.log(error.response);
-          this.feedbacks.push({ message: error.response.data.message });
-        });
+    login() {
+      const { user } = this.formData;
+      this.$store.dispatch(AUTH_REQUEST, { user }).then(() => {
+        this.$router.push("/wall");
+      });
     }
   }
 };

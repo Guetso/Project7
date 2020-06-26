@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const userRoutes = require('./routes/user')
+const messageRoutes = require('./routes/message')
 const app = express()
 
 app.use((req, res, next) => {
@@ -19,6 +20,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json())
 
+app.use('/api/messages', messageRoutes)
 app.use('/api/auth', userRoutes)
 
 module.exports = app

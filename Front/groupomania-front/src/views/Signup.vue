@@ -2,7 +2,7 @@
   <div id="Signup">
     <h2>{{ title }}</h2>
 
-    <form class="signupForm" @submit="submitForm" v-if="show">
+    <form class="signupForm" @submit.prevent="submitForm" v-if="show">
       <label for="email">E-mail:</label>
       <input
         type="email"
@@ -74,9 +74,8 @@ export default {
     };
   },
   methods: {
-    submitForm: function(e) {
+    submitForm() {
       // lorsque le bouton de validation du formulaire est cliqué :
-      e.preventDefault(); // On bloque la redirection
       axios({
         method: "post",
         url: "http://localhost:3000/api/auth/signup",

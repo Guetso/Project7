@@ -5,19 +5,38 @@ import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import Wall from '../views/Wall.vue'
 import About from '../views/About.vue'
+import store from '../store'
 
 Vue.use(VueRouter)
+
+const ifAuthenticated = (to, from, next) => {
+  if (store.getters.isAuthenticated) {
+    next()
+    return
+  }
+  next('/')
+}
+
+const ifNotAuthenticated = (to, from, next) => {
+  if (!store.getters.isAuthenticated) {
+    next()
+    return
+  }
+  next('/wall')
+}
 
   const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    beforeEnter: ifNotAuthenticated
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    beforeEnter: ifNotAuthenticated
   },
   {
     path: '/signup',
@@ -27,7 +46,8 @@ Vue.use(VueRouter)
   {
     path: '/wall',
     name: 'Wall',
-    component: Wall
+    component: Wall,
+    beforeEnter: ifAuthenticated
   },
   {
     path: '/about',
