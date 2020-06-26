@@ -1,7 +1,7 @@
 <template>
   <div id="Login">
     <h2>{{ title }}</h2>
-    <form class="loginForm" @submit="submitForm" v-if="show">
+    <form class="loginForm" @submit.prevent="submitForm" v-if="show">
       <label for="userName">Nom d'utilisateur:</label>
       <input
         type="text"
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-const xhr = require("../js/xhr");
+const axios = require("axios");
 
 export default {
   name: "Login",
@@ -46,27 +46,21 @@ export default {
     };
   },
   methods: {
-    submitForm: function(e) {
+    submitForm(e) {
       // lorsque le bouton de validation du formulaire est cliqué :
       e.preventDefault(); // On bloque la redirection
-      xhr
-        .post("api/auth/login", 200, this.formData) // On appelle la fonction POST (requête XHR), Cette fonction renvoie une promesse
+      axios({
+        method: "post",
+        url: "http://localhost:3000/api/auth/login",
+        data: this.formData
+      })
         .then(response => {
-          // En cas de réussite de la requête (resolve), la fonction nous renvoie la réponse du serveur
-          this.show = false; // On cache le formulaire
-          this.feedbacks.push({
-            // On pousse le message de la réponse du serveur dans le tableau feedbacks
-            message: response.message // le feedback s'affiche car il n'est plus vide
-          });
+          console.log(response);
+          this.$router.push("/wall");
         })
         .catch(error => {
-          // En cas d'échec de la requête
-          const serverMessage = JSON.parse(error.responseText);
-          this.show = false; //  On cache le formulaire
-          console.error(serverMessage.message); // La console renvoie la réponse de l'erreur
-          this.feedbacks.push({
-            message: serverMessage.message
-          });
+          console.log(error.response);
+          this.feedbacks.push({ message: error.response.data.message });
         });
     }
   }
@@ -74,5 +68,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+//scss directement
 @import "../sass/main";
 </style>

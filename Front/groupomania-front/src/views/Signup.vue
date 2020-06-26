@@ -59,8 +59,7 @@
 </template>
 
 <script>
-
-const xhr = require("../js/xhr");
+const axios = require("axios");
 
 export default {
   name: "Signup",
@@ -78,28 +77,26 @@ export default {
     submitForm: function(e) {
       // lorsque le bouton de validation du formulaire est cliqué :
       e.preventDefault(); // On bloque la redirection
-      xhr.post('api/auth/signup', 201, this.formData) // On appelle la fonction POST (requête XHR), Cette fonction renvoie une promesse
+      axios({
+        method: "post",
+        url: "http://localhost:3000/api/auth/signup",
+        data: this.formData
+      })
         .then(response => {
-          // En cas de réussite de la requête (resolve), la fonction nous renvoie la réponse du serveur
-          this.show = false; // On cache le formulaire
+          console.log(response);
+          this.show = false;
           this.feedbacks.push({
-            // On pousse le message de la réponse dans le tableau feedbacks
-            message: response.message // le feedback s'affiche car il n'est plus vide
+            message: response.data.message
           });
         })
         .catch(error => {
-          // En cas d'échec de la requête
-          this.show = false; //  On cache le formulaire
-          console.error(error.response); // La console renvoie la réponse de l'erreur
-          if (error.response.indexOf("users.email_UNIQUE") !== -1) {
-            // Dans le cas d'un email déjà utilisé
+          console.log(error.response);
+          this.show = false;
+          if (error.response.data.indexOf("users.email_UNIQUE") !== -1) {
             this.feedbacks.push({ message: "Cet email est déjà utilisé !" });
           }
-          if (error.response.indexOf("users.username_UNIQUE") !== -1) {
-            // Dans le cas d'un username déjà utiisé
-            this.feedbacks.push({
-              message: "Ce nom d'utilisateur est déjà utilisé !"
-            });
+          if (error.response.data.indexOf("users.username_UNIQUE") !== -1) {
+            this.feedbacks.push({ message: "Ce nom d'utilisateur est déjà utilisé !" });
           }
         });
     }
