@@ -33,3 +33,10 @@ Pour lancer le serveur de développement
     ``` 
     cd api
     nodemon server
+
+* Front
+    ``` 
+    cd Front/groupomania-front
+    npm run serve
+
+Par défaut le serveur client est accessible en local via le port 8080: http://localhost:8080/
