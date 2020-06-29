@@ -36,7 +36,8 @@ const actions = {
           const userId = res.data.userId
           localStorage.setItem('user-id', userId)
           axios.defaults.headers.common['Authorization'] = token
-          commit(AUTH_SUCCESS, token)
+          const tokenId = [token, userId]
+          commit(AUTH_SUCCESS, tokenId)
           dispatch(USER_REQUEST)
           resolve(res)
         })
@@ -51,6 +52,7 @@ const actions = {
     return new Promise((resolve) => {
       commit(AUTH_LOGOUT)
       localStorage.removeItem('user-token')
+      localStorage.removeItem('user-id')
       delete axios.defaults.headers.common['Authorisation']
       resolve()
     })
@@ -61,15 +63,17 @@ const mutations = {
   [AUTH_REQUEST]: (state) => {
     state.status = 'loading'
   },
-  [AUTH_SUCCESS]: (state, token) => {
+  [AUTH_SUCCESS]: (state, tokenId) => {
     state.status = 'success'
-    state.token = token
+    state.token = tokenId[0],
+    state.userId = tokenId[1]
   },
   [AUTH_ERROR]: (state) => {
     state.status = 'error'
   },
   [AUTH_LOGOUT]: (state) => {
     state.token = ''
+    state.userId= ''
   },
 }
 
