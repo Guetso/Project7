@@ -37,7 +37,7 @@
 
     <div class="messageService" v-if="feedbacks.length">
       <ul>
-        <p v-for="feedback in feedbacks" :key="feedback.message">
+        <p v-for="(feedback, index) in feedbacks" :key="index">
           {{ feedback.message }}
           <router-link :to="{ name: 'Login' }">Login</router-link>
         </p>
