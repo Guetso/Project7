@@ -32,9 +32,7 @@ const actions = {
       })
         .then((res) => {
           const token = res.data.token
-          localStorage.setItem('user-token', token)
           const userId = res.data.userId
-          localStorage.setItem('user-id', userId)
           axios.defaults.headers.common['Authorization'] = token
           const tokenId = [token, userId]
           commit(AUTH_SUCCESS, tokenId)
@@ -51,8 +49,6 @@ const actions = {
   [AUTH_LOGOUT]: ({ commit }) => {
     return new Promise((resolve) => {
       commit(AUTH_LOGOUT)
-      localStorage.removeItem('user-token')
-      localStorage.removeItem('user-id')
       delete axios.defaults.headers.common['Authorisation']
       resolve()
     })
