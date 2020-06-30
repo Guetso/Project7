@@ -5,12 +5,13 @@ import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import Wall from '../views/Wall.vue'
 import About from '../views/About.vue'
+import Account from '../views/Account.vue'
 import store from '../store'
 
 Vue.use(VueRouter)
 
 const ifAuthenticated = (to, from, next) => {
-  if (store.getters.isAuthenticated) {
+  if (store.state.auth.status.loggedIn) {
     next()
     return
   }
@@ -18,7 +19,7 @@ const ifAuthenticated = (to, from, next) => {
 }
 
 const ifNotAuthenticated = (to, from, next) => {
-  if (!store.getters.isAuthenticated) {
+  if (!store.state.auth.status.loggedIn) {
     next()
     return
   }
@@ -47,6 +48,12 @@ const ifNotAuthenticated = (to, from, next) => {
     path: '/wall',
     name: 'Wall',
     component: Wall,
+    beforeEnter: ifAuthenticated
+  },
+  {
+    path: '/account',
+    name: 'Account',
+    component: Account,
     beforeEnter: ifAuthenticated
   },
   {

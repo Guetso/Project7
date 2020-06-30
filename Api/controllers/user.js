@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const jwtSecret = require('../config/jwt.secret')
 
 exports.signup = (req, res, next) => {
-  const user = req.body.user
+  const user = req.body
   bcrypt.hash(user.password, 10).then((hash) => {
     user.password = hash
     conn.query('INSERT INTO users SET ?', user, function (
@@ -26,8 +26,8 @@ exports.signup = (req, res, next) => {
 }
 
 exports.login = (req, res, next) => {
-  const userReq = req.body.user.userName
-  const passReq = req.body.user.password
+  const userReq = req.body.username
+  const passReq = req.body.password
   if (userReq && passReq) {
     conn.query(
       'SELECT * FROM groupomania.users WHERE username= ?',
@@ -40,10 +40,19 @@ exports.login = (req, res, next) => {
                 .status(401)
                 .json({ message: 'Utilisateur ou mot de passe inconnu' })
             } else {
+              console.log(userReq, "s'est connecté")
+              let privilege = ''
+              if (results[0].isAdmin === 1) {
+                privilege = 'admin'
+              } else {
+                privilege = 'member'
+              }
               res.status(200).json({
-                message: 'Bienvenue dans votre espace !',
                 userId: results[0].idUSERS,
-                token: jwt.sign(
+                username: results[0].username,
+                email: results[0].email,
+                privilege: privilege,
+                accessToken: jwt.sign(
                   { userId: results[0].idUSERS },
                   jwtSecret.secret,
                   { expiresIn: '24h' }

@@ -1,12 +1,12 @@
 <template>
   <div id="Wall">
-    <h2>Vous êtes connecté !</h2>
+    <h2>Vous êtes connecté {{ currentUser.username }} !</h2>
     <form class="myMessageForm" @submit.prevent="postMyMessage" v-if="show">
       <label for="myMessageTitle">Titre de votre message:</label>
-      <input type="text" name="myMessageTitle" required v-model="formData.message.title" />
+      <input type="text" name="myMessageTitle" required v-model="message.title" />
 
       <label for="myMessageContent">Votre message:</label>
-      <textarea type="text" name="myMessageContent" required v-model="formData.message.content" ></textarea>
+      <textarea type="text" name="myMessageContent" required v-model="message.content"></textarea>
 
       <button type="submit">Valider</button>
     </form>
@@ -21,56 +21,61 @@
       </ul>
     </div>
 
-    <button @click="logout">LOGOUT</button>
+    <button @click="logOut">LOGOUT</button>
   </div>
 </template>
 
 <script>
-const axios = require("axios");
-import { AUTH_LOGOUT } from "../store/actions/auth";
+import Message from "../models/message";
 
 export default {
   name: "Wall",
   data() {
     return {
-      title: "Login",
-      formData: {
-        message: {
-          title: null,
-          content: null,
-          idUSERS: this.$store.getters.userId
-        }
-      },
-      feedbacks: [],
-      show: true
+      show: true,
+      message: new Message ("",""),
+      feedbacks: []
     };
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
   },
   methods: {
     postMyMessage() {
-      axios({
-        method: "post",
-        url: "http://localhost:3000/api/messages",
-        data: this.formData
-      })
-        .then(response => {
-          console.log(response);
-          this.feedbacks.push({
-            message: response.data.message
-          })
-          this.show = false
-        })
-        .catch(error => {
+      this.$store.dispatch("auth/createMessage", this.message).then(
+        data => {
+          console.log(this.message);
+          this.showForm = false;
+          this.successful = true;
+          this.feedbacks.push(data.message);
+        },
+        error => {
           console.log(error.response);
-          this.feedbacks.push({
-            message: error
-          })
-          this.show = false
-        });
+          this.showForm = false;
+          if (error.response.data.indexOf("users.email_UNIQUE") !== -1) {
+            this.feedbacks.push({
+              message: "Cet email est déjà utilisé !"
+            });
+            this.feedbacks.route = "signup";
+          }
+          if (error.response.data.indexOf("users.username_UNIQUE") !== -1) {
+            this.feedbacks.push({
+              message: "Ce nom d'utilisateur est déjà utilisé !"
+            });
+          }
+        }
+      );
     },
-    logout() {
-      this.$store.dispatch(AUTH_LOGOUT).then(() => {
-        this.$router.push("/");
-      });
+    logOut() {
+      this.$store.dispatch("auth/logout");
+      this.$router.push("/");
+    }
+  },
+  mounted() {
+    if (!this.currentUser) {
+      this.$router.push("/login");
     }
   }
 };

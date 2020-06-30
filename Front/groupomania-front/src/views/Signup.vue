@@ -2,12 +2,12 @@
   <div id="Signup">
     <h2>{{ title }}</h2>
 
-    <form class="signupForm" @submit.prevent="submitForm" v-if="show">
+    <form class="signupForm" @submit.prevent="registerMe" v-if="showForm">
       <label for="email">E-mail:</label>
       <input
         type="email"
         name="email"
-        v-model="formData.user.email"
+        v-model="user.email"
         placeholder="Email"
         required
         maxlength="50"
@@ -17,7 +17,7 @@
       <input
         type="text"
         name="userName"
-        v-model="formData.user.userName"
+        v-model="user.username"
         placeholder="User"
         required
         maxlength="50"
@@ -27,7 +27,7 @@
       <input
         type="password"
         name="password"
-        v-model="formData.user.password"
+        v-model="user.password"
         placeholder="Password"
         pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,15})$"
       />
@@ -39,12 +39,13 @@
       <ul>
         <p v-for="(feedback, index) in feedbacks" :key="index">
           {{ feedback.message }}
-          <router-link :to="{ name: 'Login' }">Login</router-link>
+          <router-link v-if="successful" :to="{ name: 'Login' }">Se connecter</router-link>
+          <router-link v-if="!successful" :to="{ name: 'Signup' }">Recommencer</router-link>
         </p>
       </ul>
     </div>
 
-    <aside class="passwordConditions" v-if="show">
+    <aside class="passwordConditions" v-if="showForm">
       Pour des raisons de sécurité votre mot de passe doit contenir au moins:
       <br />
       <ul>
@@ -59,45 +60,44 @@
 </template>
 
 <script>
-const axios = require("axios");
+import User from "../models/user";
 
 export default {
   name: "Signup",
-  data: function() {
+  data() {
     return {
-      title: "Signup",
-      formData: {
-        user: { email: null, userName: null, password: null, isAdmin: 0 }
-      },
+      title: "Créer un compte",
+      user: new User("", "", ""),
       feedbacks: [], // Nous permets d'afficher les informations suite à la soumission du formulaire, contient des objets au format {message : 'contenu du message'},il n'apparait que si non vide
-      show: true // Le formulaire doit il être affiché
+      showForm: true, // Le formulaire doit il être affiché
+      successful: false
     };
   },
   methods: {
-    submitForm() {
-      // lorsque le bouton de validation du formulaire est cliqué :
-      axios({
-        method: "post",
-        url: "http://localhost:3000/api/auth/signup",
-        data: this.formData
-      })
-        .then(response => {
-          console.log(response);
-          this.show = false;
-          this.feedbacks.push({
-            message: response.data.message
-          });
-        })
-        .catch(error => {
+    registerMe() {
+      this.$store.dispatch("auth/register", this.user).then(
+        data => {
+          console.log(data.message);
+          this.showForm = false;
+          this.successful = true;
+          this.feedbacks.push(data.message);
+        },
+        error => {
           console.log(error.response);
-          this.show = false;
+          this.showForm = false;
           if (error.response.data.indexOf("users.email_UNIQUE") !== -1) {
-            this.feedbacks.push({ message: "Cet email est déjà utilisé !" });
+            this.feedbacks.push({
+              message: "Cet email est déjà utilisé !"
+            });
+            this.feedbacks.route = "signup";
           }
           if (error.response.data.indexOf("users.username_UNIQUE") !== -1) {
-            this.feedbacks.push({ message: "Ce nom d'utilisateur est déjà utilisé !" });
+            this.feedbacks.push({
+              message: "Ce nom d'utilisateur est déjà utilisé !"
+            });
           }
-        });
+        }
+      );
     }
   }
 };

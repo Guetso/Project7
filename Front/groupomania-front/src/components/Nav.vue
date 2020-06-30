@@ -31,7 +31,8 @@ export default {
       show: false,
       navItems: [
         { id: 1, text: "Accueil", name: "Home" },
-        { id: 2, text: "A propos", name: "About" }
+        { id: 2, text: "Votre compte", name: "Account" },
+        { id: 3, text: "A propos", name: "About" }
       ]
     };
   }
