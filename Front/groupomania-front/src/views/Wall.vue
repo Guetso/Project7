@@ -6,18 +6,32 @@
       <input type="text" name="myMessageTitle" required v-model="message.title" />
 
       <label for="myMessageContent">Votre message:</label>
-      <textarea type="text" name="myMessageContent" required v-model="message.content"></textarea>
+      <textarea
+        class="myMessageForm__textarea"
+        type="text"
+        name="myMessageContent"
+        required
+        v-model="message.content"
+      ></textarea>
 
       <button type="submit">Valider</button>
     </form>
 
     <div class="myWall">
-      <ul></ul>
+      <section>
+        <post
+          v-for="(post, index) in posts"
+          :key="index"
+          :title="post.title"
+          :content="post.content"
+          :author="post.idUSERS"
+        ></post>
+      </section>
     </div>
 
     <div class="messageService" v-if="feedbacks.length">
       <ul>
-        <p v-for="(feedback, index) in feedbacks" :key="index">{{ feedback.message }}</p>
+        <li v-for="(feedback, index) in feedbacks" :key="index">{{ feedback.message }}</li>
       </ul>
     </div>
 
@@ -27,14 +41,19 @@
 
 <script>
 import Message from "../models/message";
+import Post from "../components/Post";
 
 export default {
   name: "Wall",
+  components: {
+    Post
+  },
   data() {
     return {
       show: true,
-      message: new Message ("",""),
-      feedbacks: []
+      message: new Message("", ""),
+      feedbacks: [],
+      posts: []
     };
   },
   computed: {
@@ -44,12 +63,14 @@ export default {
   },
   methods: {
     postMyMessage() {
-      this.$store.dispatch("auth/createMessage", this.message).then(
+      this.$store.dispatch("message/createMessage", this.message).then(
         data => {
           console.log(this.message);
           this.showForm = false;
           this.successful = true;
           this.feedbacks.push(data.message);
+          this.message.title=null
+          this.message.content=null
         },
         error => {
           console.log(error.response);
@@ -77,6 +98,34 @@ export default {
     if (!this.currentUser) {
       this.$router.push("/login");
     }
+    this.$store.dispatch("message/getAllMessage").then(() => {
+      const returnedMessages = this.$store.state.message.messages;
+      console.log(returnedMessages);
+      for (let i = 0; i < returnedMessages.length; i++) {
+        this.posts.push(returnedMessages[i]);
+      }
+    });
   }
 };
 </script>
+
+<style lang="scss" scoped>
+#Wall {
+  margin-bottom: 2rem;
+  .myMessageForm {
+    border: solid 1px red;
+    margin: 2rem 1rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    &__textarea {
+      width: 100%;
+      height: 5rem;
+    }
+  }
+  .myWall {
+    border: solid 1px green;
+    margin: 2rem 0;
+  }
+}
+</style>

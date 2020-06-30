@@ -6,5 +6,6 @@ const auth = require('../middelware/auth')
 const multer = require('../middelware/multer-config')
 
 router.post('/', auth, multer, messageCtrl.createMessage)
+router.get('/', auth, messageCtrl.getAllMessages)
 
 module.exports = router
