@@ -1,7 +1,8 @@
 <template>
   <div id="Wall">
     <h2>Vous êtes connecté {{ currentUser.username }} !</h2>
-    <form class="myMessageForm" @submit.prevent="postMyMessage" v-if="show">
+
+    <form class="myMessageForm" @submit.prevent="postMyMessage">
       <label for="myMessageTitle">Titre de votre message:</label>
       <input type="text" name="myMessageTitle" required v-model="message.title" />
 
@@ -17,6 +18,10 @@
       <button type="submit">Valider</button>
     </form>
 
+    <div class="messageService" v-if="feedbacks">
+      <span>{{ feedbacks }}</span>
+    </div>
+
     <div class="myWall">
       <section>
         <post
@@ -24,17 +29,14 @@
           :key="index"
           :title="post.title"
           :content="post.content"
-          :author="post.idUSERS"
+          :messageId="post.idMESSAGES"
+          :userId="post.idUSERS"
+          :currentUser="currentUser.userId"
+          @deleteFeedback="setFeedback"
+          @modifyFeedback="setFeedback"
         ></post>
       </section>
     </div>
-
-    <div class="messageService" v-if="feedbacks.length">
-      <ul>
-        <li v-for="(feedback, index) in feedbacks" :key="index">{{ feedback.message }}</li>
-      </ul>
-    </div>
-
     <button @click="logOut">LOGOUT</button>
   </div>
 </template>
@@ -50,27 +52,29 @@ export default {
   },
   data() {
     return {
-      show: true,
+      showForm: true,
       message: new Message("", ""),
-      feedbacks: [],
-      posts: []
+      feedbacks: null
     };
   },
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
+    },
+    posts() {
+      return this.$store.state.message.messages;
     }
   },
   methods: {
     postMyMessage() {
       this.$store.dispatch("message/createMessage", this.message).then(
         data => {
-          console.log(this.message);
+          console.log(data);
+          this.$store.dispatch("message/getAllMessage");
           this.showForm = false;
-          this.successful = true;
-          this.feedbacks.push(data.message);
-          this.message.title=null
-          this.message.content=null
+          this.feedbacks = data.message;
+          this.message.title = null;
+          this.message.content = null;
         },
         error => {
           console.log(error.response);
@@ -89,6 +93,9 @@ export default {
         }
       );
     },
+    setFeedback(postFeedback) {
+      this.feedbacks = postFeedback
+    },
     logOut() {
       this.$store.dispatch("auth/logout");
       this.$router.push("/");
@@ -98,13 +105,10 @@ export default {
     if (!this.currentUser) {
       this.$router.push("/login");
     }
-    this.$store.dispatch("message/getAllMessage").then(() => {
-      const returnedMessages = this.$store.state.message.messages;
-      console.log(returnedMessages);
-      for (let i = 0; i < returnedMessages.length; i++) {
-        this.posts.push(returnedMessages[i]);
-      }
-    });
+    this.$store.dispatch("message/getAllMessage");
+  },
+  updated() {
+    console.log("up");
   }
 };
 </script>

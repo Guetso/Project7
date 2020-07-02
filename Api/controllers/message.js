@@ -24,7 +24,37 @@ exports.getAllMessages = (req, res, next) => {
     if (error) {
       return res.status(400).json(error)
     }
-    console.log(results)
     return res.status(200).json({ results })
   })
+}
+
+exports.modifyMessage = (req, res, next) => {
+  const updatedMessage = req.body
+  conn.query(
+    `UPDATE messages SET ? WHERE idMESSAGES=${req.params.id}`,
+    updatedMessage,
+    function (error, results, fields) {
+      if (error) {
+        return res.status(400).json(error)
+      }
+      return res
+        .status(200)
+        .json({ message: 'Votre message a bien été modifié !' })
+    }
+  )
+}
+
+exports.deleteMessage = (req, res, next) => {
+  conn.query(
+    `DELETE FROM messages WHERE idMESSAGES=${req.params.id}`,
+    req.params.id,
+    function (error, results, fields) {
+      if (error) {
+        return res.status(400).json(error)
+      }
+      return res
+        .status(200)
+        .json({ message: 'Votre message a bien été supprimé !' })
+    }
+  )
 }

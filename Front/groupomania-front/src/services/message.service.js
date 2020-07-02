@@ -20,6 +20,23 @@ class MessageService {
   getAllMessage() {
     return axios.get(API_URL + '', { headers: authHeader() })
   }
+
+  modifyMessage(payload) {
+    const id = payload.id
+    return axios.put(
+      API_URL + id,
+      {
+        title: payload.message.title,
+        content: payload.message.content
+      },
+      { headers: authHeader() }
+    )
+  }
+
+  deleteMessage(payload) {
+    const id = payload
+    return axios.delete(API_URL + id, { headers: authHeader() })
+  }
 }
 
 export default new MessageService()
