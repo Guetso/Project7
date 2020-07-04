@@ -4,40 +4,38 @@
       <h3>{{ title}}</h3>
       <p>{{ content }}</p>
       <span>De: {{ userId }}</span>
+      <span>Le: {{ createdAt }}</span>
       <aside>
         <button v-show="userId === currentUser" @click="view = 'onModify'">Modifier</button>
         <button v-show="userId === currentUser" @click.prevent="deleteMyMessage">Supprimer</button>
+        <button @click.prevent="replyMessage">Commenter</button>
       </aside>
     </div>
 
-    <div class="onModify" v-show="view === 'onModify'">
-      <form class="myMessageForm" @submit.prevent="modifyMyMessage">
-        <label for="myMessageTitle">Titre de votre message:</label>
-        <input type="text" name="myMessageTitle" v-model="message.title" required />
-
-        <label for="myMessageContent">Votre message:</label>
-        <textarea
-          class="myMessageForm__textarea"
-          type="text"
-          name="myMessageContent"
-          v-model="message.content"
-          required
-        ></textarea>
-
-        <button type="submit" @click="view = 'onDisplay'">Valider</button>
-      </form>
-    </div>
+    <Form
+      v-show="view ==='onModify'"
+      :title="title"
+      :content="content"
+      :messageId="messageId"
+      :userId="userId"
+      :onSubmit="formMethod"
+      @changeView="changeView"
+      @modifyFeedback="passFeedback"
+    ></Form>
   </div>
 </template>
 
 <script>
+import Form from "./Form";
 export default {
   name: "Message",
+  components: { Form },
   props: {
     title: String,
     content: String,
     messageId: Number,
     userId: Number,
+    createdAt: String,
     currentUser: Number,
     onModifyTitle: String,
     onModifyContent: String
@@ -48,32 +46,26 @@ export default {
       message: {
         title: this.title,
         content: this.content
-      }
+      },
+      formMethod: "modifyMyMessage",
     };
   },
   methods: {
-    modifyMyMessage() {
-      let payload = {
-        id: this.messageId,
-        message: this.message
-      };
-      this.$store.dispatch("message/modifyMessage", payload).then(
-        data => {
-          this.$store.dispatch("message/getAllMessage")
-          this.$emit('modifyFeedback',data.message)
-          console.log(data);
-        },
-        error => {
-          console.log(error);
-        }
-      );
+    passFeedback(formFeedback) {
+      this.$emit("modifyFeedback", formFeedback)
+    },
+    changeView(View) {
+      this.view = View;
+    },
+    replyMessage() {
+      console.log("reponse");
     },
     deleteMyMessage() {
       let payload = this.messageId;
       this.$store.dispatch("message/deleteMessage", payload).then(
         data => {
-          this.$store.dispatch("message/getAllMessage")
-          this.$emit('deleteFeedback',data.message)
+          this.$store.dispatch("message/getAllMessage");
+          this.$emit("deleteFeedback", data.message);
           console.log(data);
         },
         error => {
@@ -81,7 +73,7 @@ export default {
         }
       );
     }
-  },
+  }
 };
 </script>
 

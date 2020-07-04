@@ -1,6 +1,6 @@
 <template>
   <div id="Form">
-    <form class="myMessageForm" @submit.prevent="postMyMessage">
+    <form class="myMessageForm" @submit.prevent="onSubmitMethod">
       <label for="myMessageTitle">Titre de votre message:</label>
       <input type="text" name="myMessageTitle" required v-model="message.title" />
 
@@ -23,26 +23,70 @@ import Message from "../models/message";
 
 export default {
   name: "Form",
+  props: {
+    onSubmit: String,
+    title: String,
+    content: String,
+    userId: Number,
+    messageId: Number
+  },
   data() {
     return {
-      message: new Message("", "")
+      message: ""
     };
   },
   methods: {
+    typeOfMessage() {
+      if (this.onSubmit === "modifyMyMessage") {
+        this.message = { title: this.title, content: this.content };
+      }
+      if (this.onSubmit === "postMyMessage") {
+        this.message = new Message("", "");
+      }
+    },
+    onSubmitMethod(event) {
+      if (this.onSubmit === "modifyMyMessage") {
+        this.modifyMyMessage();
+      }
+      if (this.onSubmit === "postMyMessage") {
+        this.postMyMessage(event);
+      }
+    },
+    modifyMyMessage() {
+      let payload = {
+        id: this.messageId,
+        message: this.message
+      };
+      this.$store.dispatch("message/modifyMessage", payload).then(
+        data => {
+          this.$store.dispatch("message/getAllMessage");
+          this.$emit("modifyFeedback", data.message);
+          this.$emit("changeView", "onDisplay");
+          this.message = new Message("", "");
+          console.log(data);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    },
     postMyMessage(event) {
       this.$store.dispatch("message/createMessage", this.message).then(
         data => {
-          console.log(data);
           this.$store.dispatch("message/getAllMessage");
           this.$emit("addFeedback", data.message);
-          this.message= new Message('','')
+          this.message = new Message("", "");
           event.target.reset();
+          console.log(data);
         },
         error => {
           console.log(error);
         }
       );
     }
+  },
+  mounted() {
+    this.typeOfMessage();
   }
 };
 </script>

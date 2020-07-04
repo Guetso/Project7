@@ -2,7 +2,7 @@
   <div id="Wall">
     <h2>Vous êtes connecté {{ currentUser.username }} !</h2>
 
-    <Form @addFeedback="setFeedback"></Form>
+    <Form @addFeedback="setFeedback" :onSubmit="formMethod"></Form>
 
     <div class="messageService" v-if="feedbacks">
       <span>{{ feedbacks }}</span>
@@ -17,6 +17,7 @@
           :content="post.content"
           :messageId="post.idMESSAGES"
           :userId="post.idUSERS"
+          :createdAt="post.created_at"
           :currentUser="currentUser.userId"
           @deleteFeedback="setFeedback"
           @modifyFeedback="setFeedback"
@@ -43,6 +44,7 @@ export default {
       showForm: true,
       message: new Message("", ""),
       feedbacks: null,
+      formMethod :'postMyMessage'
     };
   },
   computed: {

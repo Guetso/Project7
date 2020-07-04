@@ -24,6 +24,7 @@ exports.getAllMessages = (req, res, next) => {
     if (error) {
       return res.status(400).json(error)
     }
+    console.log(results)
     return res.status(200).json({ results })
   })
 }
