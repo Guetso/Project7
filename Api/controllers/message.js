@@ -30,7 +30,7 @@ exports.replyMessage = (req, res, next) => {
 }
 
 exports.getAllMessages = (req, res, next) => {
-  conn.query('SELECT * FROM groupomania.messages', function (
+  conn.query('SELECT * FROM groupomania.messages ORDER BY created_at DESC', function (
     error,
     results,
     fields

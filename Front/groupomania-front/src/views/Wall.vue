@@ -22,7 +22,8 @@
           :messageParent="post.message_parent"
           @deleteFeedback="setFeedback"
           @modifyFeedback="setFeedback"
-        ></post>
+        >
+        </post>
       </section>
     </div>
     <button @click="logOut">LOGOUT</button>
