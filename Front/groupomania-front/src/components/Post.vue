@@ -1,6 +1,6 @@
 <template>
   <div id="Message">
-    <div class="onDisplay" v-show="view === 'onDisplay'">
+    <div class="onDisplay" v-show="view === 'onDisplay' || view === 'onReply'">
       <h3>{{ title}}</h3>
       <p>{{ content }}</p>
       <span>De: {{ userId }}</span>
@@ -8,7 +8,7 @@
       <aside>
         <button v-show="userId === currentUser" @click="view = 'onModify'">Modifier</button>
         <button v-show="userId === currentUser" @click.prevent="deleteMyMessage">Supprimer</button>
-        <button @click.prevent="replyMessage">Commenter</button>
+        <button @click.prevent="replyMessage, view='onReply'">Commenter</button>
       </aside>
     </div>
 
@@ -18,7 +18,20 @@
       :content="content"
       :messageId="messageId"
       :userId="userId"
-      :onSubmit="formMethod"
+      :onSubmit="formMethod.modify"
+      :messageParent="messageParent"
+      @changeView="changeView"
+      @modifyFeedback="passFeedback"
+    ></Form>
+
+    <Form
+      v-show="view ==='onReply'"
+      :title="title"
+      :content="content"
+      :messageId="messageId"
+      :userId="userId"
+      :onSubmit="formMethod.reply"
+      :messageParent="messageParent"
       @changeView="changeView"
       @modifyFeedback="passFeedback"
     ></Form>
@@ -37,6 +50,7 @@ export default {
     userId: Number,
     createdAt: String,
     currentUser: Number,
+    messageParent: Number,
     onModifyTitle: String,
     onModifyContent: String
   },
@@ -47,12 +61,12 @@ export default {
         title: this.title,
         content: this.content
       },
-      formMethod: "modifyMyMessage",
+      formMethod: { modify: "modifyMyMessage", reply: "replyMessage" }
     };
   },
   methods: {
     passFeedback(formFeedback) {
-      this.$emit("modifyFeedback", formFeedback)
+      this.$emit("modifyFeedback", formFeedback);
     },
     changeView(View) {
       this.view = View;

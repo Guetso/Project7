@@ -17,6 +17,20 @@ class MessageService {
     )
   }
 
+  replyMessage(payload) {
+    const id = payload.id
+    return axios.post(
+      API_URL + id,
+      {
+        title: payload.message.title,
+        content: payload.message.content,
+        idUSERS: store.state.auth.user.userId,
+        message_parent: payload.message.message_parent
+      },
+      { headers: authHeader() }
+    )
+  }
+
   getAllMessage() {
     return axios.get(API_URL + '', { headers: authHeader() })
   }

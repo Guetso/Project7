@@ -19,6 +19,7 @@
           :userId="post.idUSERS"
           :createdAt="post.created_at"
           :currentUser="currentUser.userId"
+          :messageParent="post.message_parent"
           @deleteFeedback="setFeedback"
           @modifyFeedback="setFeedback"
         ></post>

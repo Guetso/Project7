@@ -7,6 +7,7 @@ const multer = require('../middelware/multer-config')
 
 router.post('/', auth, multer, messageCtrl.createMessage)
 router.get('/', auth, messageCtrl.getAllMessages)
+router.post('/:id', auth, multer, messageCtrl.replyMessage)
 router.put('/:id', auth, multer, messageCtrl.modifyMessage)
 router.delete('/:id', auth, messageCtrl.deleteMessage)
 

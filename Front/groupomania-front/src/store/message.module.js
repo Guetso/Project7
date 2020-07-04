@@ -5,7 +5,7 @@ export const message = {
   state: {
     createdMessage: { status: '' },
     modifiedMessage: { status: '' },
-    deletedMessage: { status: ''},
+    deletedMessage: { status: '' },
     messages: ''
   },
   actions: {
@@ -33,6 +33,18 @@ export const message = {
         }
       )
     },
+    replyMessage({ commit }, message) {
+      return MessageService.replyMessage(message).then(
+        (response) => {
+          commit('replyMessageSuccess')
+          return Promise.resolve(response.data)
+        },
+        (error) => {
+          commit('replyMessageFailure')
+          return Promise.reject(error)
+        }
+      )
+    },
     modifyMessage({ commit }, payload) {
       return MessageService.modifyMessage(payload).then(
         (response) => {
@@ -45,14 +57,14 @@ export const message = {
         }
       )
     },
-    deleteMessage({commit}, payload) {
+    deleteMessage({ commit }, payload) {
       return MessageService.deleteMessage(payload).then(
         (response) => {
-          commit ('deleteMessageSuccess')
+          commit('deleteMessageSuccess')
           return Promise.resolve(response.data)
         },
         (error) => {
-          commit ('deleteMessageFailure')
+          commit('deleteMessageFailure')
           return Promise.reject(error)
         }
       )
@@ -68,6 +80,12 @@ export const message = {
     },
     createMessageFailure(state) {
       state.createdMessage.status = 'Not posted'
+    },
+    replyMessageSuccess(state) {
+      state.createdMessage.status = 'Replied'
+    },
+    replyMessageFailure(state) {
+      state.createdMessage.status = 'Not replied'
     },
     modifyMessageSuccess(state) {
       state.modifiedMessage.status = 'Modified'
