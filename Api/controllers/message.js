@@ -30,17 +30,15 @@ exports.replyMessage = (req, res, next) => {
 }
 
 exports.getAllMessages = (req, res, next) => {
-  conn.query('SELECT * FROM groupomania.messages ORDER BY created_at DESC', function (
-    error,
-    results,
-    fields
-  ) {
-    if (error) {
-      return res.status(400).json(error)
+  conn.query(
+    'SELECT * , DATE_FORMAT(created_at,"%d/%m/%Y %H:%i:%s") AS created_at_formated  FROM groupomania.messages ORDER BY created_at DESC',
+    function (error, results, fields) {
+      if (error) {
+        return res.status(400).json(error)
+      }
+      return res.status(200).json({ results })
     }
-    console.log(results)
-    return res.status(200).json({ results })
-  })
+  )
 }
 
 exports.modifyMessage = (req, res, next) => {
@@ -72,4 +70,23 @@ exports.deleteMessage = (req, res, next) => {
         .json({ message: 'Votre message a bien été supprimé !' })
     }
   )
+}
+
+exports.addLike = (req, res, next) => {
+  const like = req.body.like
+  if (like === 1) {
+    const likeMessage = req.body
+    conn.query(
+      `UPDATE messages SET ? WHERE idMESSAGES=${req.params.id}`,
+      +likeMessage,
+      function (error, results, fields) {
+        if (error) {
+          return res.status(400).json(error)
+        }
+        return res
+          .status(200)
+          .json({ message: 'Like ajouté !' })
+      }
+    )
+  }
 }

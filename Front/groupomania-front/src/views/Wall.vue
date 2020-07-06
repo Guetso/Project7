@@ -17,12 +17,30 @@
           :content="post.content"
           :messageId="post.idMESSAGES"
           :userId="post.idUSERS"
-          :createdAt="post.created_at"
+          :createdAt="post.created_at_formated"
+          :likes=" post.likes"
           :currentUser="currentUser.userId"
           :messageParent="post.message_parent"
+          :username="post.username"
           @deleteFeedback="setFeedback"
           @modifyFeedback="setFeedback"
         >
+          <post
+            v-for="(reply, index) in replies"
+            v-show="reply.message_parent === post.idMESSAGES"
+            :key="index"
+            :title="reply.title"
+            :content="reply.content"
+            :messageId="reply.idMESSAGES"
+            :userId="reply.idUSERS"
+            :createdAt="reply.created_at_formated"
+            :likes="reply.likes"
+            :currentUser="currentUser.userId"
+            :messageParent="reply.message_parent"
+            :username="reply.username"
+            @deleteFeedback="setFeedback"
+            @modifyFeedback="setFeedback"
+          ></post>
         </post>
       </section>
     </div>
@@ -46,7 +64,7 @@ export default {
       showForm: true,
       message: new Message("", ""),
       feedbacks: null,
-      formMethod :'postMyMessage'
+      formMethod: "postMyMessage"
     };
   },
   computed: {
@@ -54,7 +72,26 @@ export default {
       return this.$store.state.auth.user;
     },
     posts() {
-      return this.$store.state.message.messages;
+      const allMessages = this.$store.state.message.messages;
+      const posts = [];
+      for (let i = 0; i < allMessages.length; i++) {
+        const post = allMessages[i];
+        if (post.message_parent == null) {
+          posts.push(post);
+        }
+      }
+      return posts;
+    },
+    replies() {
+      const allMessages = this.$store.state.message.messages;
+      const replies = [];
+      for (let i = 0; i < allMessages.length; i++) {
+        const post = allMessages[i];
+        if (post.message_parent != null) {
+          replies.push(post);
+        }
+      }
+      return replies;
     }
   },
   methods: {

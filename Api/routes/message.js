@@ -10,5 +10,6 @@ router.get('/', auth, messageCtrl.getAllMessages)
 router.post('/:id', auth, multer, messageCtrl.replyMessage)
 router.put('/:id', auth, multer, messageCtrl.modifyMessage)
 router.delete('/:id', auth, messageCtrl.deleteMessage)
+router.post('/:id/like', auth, messageCtrl.addLike)
 
 module.exports = router

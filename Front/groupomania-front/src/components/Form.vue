@@ -49,9 +49,9 @@ export default {
   computed: {
     isReply() {
       if (this.messageParent === null || this.messageParent === undefined) {
-        return false
+        return false;
       } else {
-        return true
+        return true;
       }
     }
   },
@@ -78,7 +78,7 @@ export default {
         this.replyMessage(event);
       }
     },
-    modifyMyMessage() {
+    modifyMyMessage(event) {
       let payload = {
         id: this.messageId,
         message: this.message
@@ -88,6 +88,8 @@ export default {
           this.$store.dispatch("message/getAllMessage");
           this.$emit("modifyFeedback", data.message);
           this.$emit("changeView", "onDisplay");
+          this.message = { title: this.title, content: this.content };
+          event.target.reset();
           console.log(data);
           console.log("modify");
         },

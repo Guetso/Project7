@@ -11,7 +11,8 @@ class MessageService {
       {
         title: message.title,
         content: message.content,
-        idUSERS: store.state.auth.user.userId
+        idUSERS: store.state.auth.user.userId,
+        username: store.state.auth.user.username
       },
       { headers: authHeader() }
     )
@@ -25,7 +26,8 @@ class MessageService {
         title: payload.message.title,
         content: payload.message.content,
         idUSERS: store.state.auth.user.userId,
-        message_parent: payload.message.message_parent
+        message_parent: payload.message.message_parent,
+        username: store.state.auth.user.username
       },
       { headers: authHeader() }
     )

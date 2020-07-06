@@ -1,15 +1,25 @@
-<template>
+<template >
   <div id="Message">
-    <div class="onDisplay" v-show="view === 'onDisplay' || view === 'onReply'">
-      <h3>{{ title}}</h3>
-      <p>{{ content }}</p>
-      <span>De: {{ userId }}</span>
-      <span>Le: {{ createdAt }}</span>
+    <div class="post" v-show="view === 'onDisplay' || view === 'onReply'">
+      <div class="post__body">
+        <h3>{{ title}}</h3>
+        <p>{{ content }}</p>
+      </div>
+      <div class="post__infos">
+        <span>De: {{ username }}</span>
+        <span>Le: {{ createdAt }}</span>
+        <span>Likes: {{ likes }}</span>
+      </div>
       <aside>
+        <button>LIKER</button>
         <button v-show="userId === currentUser" @click="view = 'onModify'">Modifier</button>
         <button v-show="userId === currentUser" @click.prevent="deleteMyMessage">Supprimer</button>
-        <button @click.prevent="replyMessage, view='onReply'">Commenter</button>
+        <button @click.prevent="replyMessage, view='onReply'" v-show="!isReply()">Commenter</button>
       </aside>
+
+      <div id="reply">
+        <slot></slot>
+      </div>
     </div>
 
     <Form
@@ -49,7 +59,9 @@ export default {
     messageId: Number,
     userId: Number,
     createdAt: String,
+    likes: Number,
     currentUser: Number,
+    username: String,
     messageParent: Number,
     onModifyTitle: String,
     onModifyContent: String
@@ -65,6 +77,13 @@ export default {
     };
   },
   methods: {
+    isReply() {
+      if (this.messageParent === null || this.messageParent === undefined) {
+        return false;
+      } else {
+        return true;
+      }
+    },
     passFeedback(formFeedback) {
       this.$emit("modifyFeedback", formFeedback);
     },
@@ -93,6 +112,24 @@ export default {
 
 <style lang="scss" scoped>
 #Message {
-  border: solid 1px black;
+  .post {
+    border: 3px blue solid;
+    margin: 1rem;
+    &__body {
+      margin: 2rem;
+    }
+    &__infos {
+      display: flex;
+      justify-content: space-around;
+    }
+  }
+  #reply {
+    border: 2px rgb(0, 132, 255) solid;
+    #Message {
+      .post {
+        border: 1px rgb(0, 225, 255) solid;
+      }
+    }
+  }
 }
 </style>

@@ -73,3 +73,15 @@ exports.login = (req, res, next) => {
       .json({ message: "Entrez un nom d'utilisateur et un mot de passe" })
   }
 }
+
+exports.getAllUsers = (req, res, next) => {
+  conn.query(
+    'SELECT idUSERS, username, isAdmin, bio, email FROM groupomania.users',
+    function (error, results, fields) {
+      if (error) {
+        return res.status(400).json(error)
+      }
+      return res.status(200).json({ results })
+    }
+  )
+}
