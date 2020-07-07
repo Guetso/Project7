@@ -19,14 +19,13 @@ class MessageService {
   }
 
   replyMessage(payload) {
-    const id = payload.id
     return axios.post(
-      API_URL + id,
+      API_URL + '',
       {
         title: payload.message.title,
         content: payload.message.content,
         idUSERS: store.state.auth.user.userId,
-        message_parent: payload.message.message_parent,
+        message_parent: payload.id,
         username: store.state.auth.user.username
       },
       { headers: authHeader() }

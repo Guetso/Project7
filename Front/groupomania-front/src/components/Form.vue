@@ -38,7 +38,8 @@ export default {
     content: String,
     userId: Number,
     messageId: Number,
-    messageParent: Number
+    messageParent: Number,
+    currentId: Number
   },
   data() {
     return {
@@ -80,7 +81,7 @@ export default {
     },
     modifyMyMessage(event) {
       let payload = {
-        id: this.messageId,
+        id: this.currentId,
         message: this.message
       };
       this.$store.dispatch("message/modifyMessage", payload).then(
@@ -115,7 +116,7 @@ export default {
     },
     replyMessage(event) {
       let payload = {
-        id: this.messageId,
+        id: this.currentId,
         message: this.message
       };
       this.$store.dispatch("message/replyMessage", payload).then(

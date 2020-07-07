@@ -12,9 +12,9 @@
       </div>
       <aside>
         <button>LIKER</button>
-        <button v-show="userId === currentUser" @click="view = 'onModify'">Modifier</button>
+        <button v-show="userId === currentUser" @click="modifyMessage" :data-id="messageId">Modifier</button>
         <button v-show="userId === currentUser" @click.prevent="deleteMyMessage">Supprimer</button>
-        <button @click.prevent="replyMessage, view='onReply'" v-show="!isReply()">Commenter</button>
+        <button @click.prevent="replyMessage" :data-id="messageId" v-show="!isReply()">Commenter</button>
       </aside>
 
       <div id="reply">
@@ -42,6 +42,7 @@
       :userId="userId"
       :onSubmit="formMethod.reply"
       :messageParent="messageParent"
+      :currentId="currentId"
       @changeView="changeView"
       @modifyFeedback="passFeedback"
     ></Form>
@@ -69,6 +70,7 @@ export default {
   data() {
     return {
       view: "onDisplay",
+      currentId: null,
       message: {
         title: this.title,
         content: this.content
@@ -90,8 +92,13 @@ export default {
     changeView(View) {
       this.view = View;
     },
-    replyMessage() {
-      console.log("reponse");
+    replyMessage(event) {
+      this.view = 'onReply'
+      this.currentId = parseInt(event.target.dataset.id, 10)
+    },
+    modifyMessage(event) {
+      this.view = 'onModify'
+      this.currentId = parseInt(event.target.dataset.id, 10)
     },
     deleteMyMessage() {
       let payload = this.messageId;
