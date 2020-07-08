@@ -36,9 +36,28 @@ export const auth = {
           return Promise.reject(error)
         }
       )
+    },
+    deleteAccount({commit}, payload) {
+      return AuthService.delete(payload).then(
+        (response) => {
+          commit ('deleteSuccess')
+          return Promise.resolve(response.data)
+        },
+        (error) => {
+          commit ('deleteFailure')
+          return Promise.reject(error)
+        }
+      )
     }
   },
   mutations: {
+    deleteSuccess(state) {
+      state.status.loggedIn= false
+      state.user = null
+    },
+    deleteFailure() {
+
+    },
     loginSuccess(state, user) {
       state.status.loggedIn = true
       state.user = user

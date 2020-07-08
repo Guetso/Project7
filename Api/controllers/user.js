@@ -53,7 +53,7 @@ exports.login = (req, res, next) => {
                 email: results[0].email,
                 privilege: privilege,
                 accessToken: jwt.sign(
-                  { userId: results[0].idUSERS },
+                  { userId: results[0].idUSERS, role: privilege },
                   jwtSecret.secret,
                   { expiresIn: '24h' }
                 )
@@ -82,6 +82,21 @@ exports.getAllUsers = (req, res, next) => {
         return res.status(400).json(error)
       }
       return res.status(200).json({ results })
+    }
+  )
+}
+
+exports.deleteUser = (req, res, next) => {
+  conn.query(
+    `DELETE FROM users WHERE idUSERS=${req.params.id}`,
+    req.params.id,
+    function (error, results, fields) {
+      if (error) {
+        return res.status(400).json(error)
+      }
+      return res
+        .status(200)
+        .json({ message: 'Votre compte a bien été supprimé !' })
     }
   )
 }

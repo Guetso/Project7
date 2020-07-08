@@ -25,22 +25,22 @@
           @deleteFeedback="setFeedback"
           @modifyFeedback="setFeedback"
         >
-          <post
-            v-for="(reply, index) in replies"
-            v-show="reply.message_parent === post.idMESSAGES"
-            :key="index"
-            :title="reply.title"
-            :content="reply.content"
-            :messageId="reply.idMESSAGES"
-            :userId="reply.idUSERS"
-            :createdAt="reply.created_at_formated"
-            :likes="reply.likes"
-            :currentUser="currentUser.userId"
-            :messageParent="reply.message_parent"
-            :username="reply.username"
-            @deleteFeedback="setFeedback"
-            @modifyFeedback="setFeedback"
-          ></post>
+          <div v-for="(reply, index) in replies" :key="index">
+            <post
+              v-if="reply.message_parent === post.idMESSAGES"
+              :title="reply.title"
+              :content="reply.content"
+              :messageId="reply.idMESSAGES"
+              :userId="reply.idUSERS"
+              :createdAt="reply.created_at_formated"
+              :likes="reply.likes"
+              :currentUser="currentUser.userId"
+              :messageParent="reply.message_parent"
+              :username="reply.username"
+              @deleteFeedback="setFeedback"
+              @modifyFeedback="setFeedback"
+            ></post>
+          </div>
         </post>
       </section>
     </div>
@@ -49,7 +49,6 @@
 </template>
 
 <script>
-import Message from "../models/message";
 import Form from "../components/Form";
 import Post from "../components/Post";
 
@@ -62,7 +61,6 @@ export default {
   data() {
     return {
       showForm: true,
-      message: new Message("", ""),
       feedbacks: null,
       formMethod: "postMyMessage"
     };
@@ -108,6 +106,7 @@ export default {
       this.$router.push("/login");
     }
     this.$store.dispatch("message/getAllMessage");
+    console.log(this.$store.state.auth.user.privilege)
   }
 };
 </script>

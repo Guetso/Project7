@@ -1,5 +1,7 @@
 /* const fs = require('fs') */
 const conn = require('../mysqlConfig')
+const jwt = require('jsonwebtoken')
+const config = require('../config/jwt.secret')
 
 exports.createMessage = (req, res, next) => {
   const message = req.body
@@ -59,15 +61,32 @@ exports.modifyMessage = (req, res, next) => {
 
 exports.deleteMessage = (req, res, next) => {
   conn.query(
-    `DELETE FROM messages WHERE idMESSAGES=${req.params.id}`,
+    `SELECT * FROM messages WHERE idMESSAGES=${req.params.id}`,
     req.params.id,
     function (error, results, fields) {
       if (error) {
         return res.status(400).json(error)
       }
-      return res
-        .status(200)
-        .json({ message: 'Votre message a bien été supprimé !' })
+      const token = req.headers.authorization.split(' ')[1]
+      const decodedToken = jwt.verify(token, config.secret)
+      const userId = decodedToken.userId
+      const role = decodedToken.role
+      const messageId = results[0].idUSERS
+      if (userId !== messageId && role !== 'admin') {
+        return res.status(401).json({ message: 'Accès non autorisé' })
+      }
+      conn.query(
+        `DELETE FROM messages WHERE idMESSAGES=${req.params.id}`,
+        req.params.id,
+        function (error, results, fields) {
+          if (error) {
+            return res.status(400).json(error)
+          }
+          return res
+            .status(200)
+            .json({ message: 'Votre message a bien été supprimé !' })
+        }
+      )
     }
   )
 }
@@ -83,9 +102,7 @@ exports.addLike = (req, res, next) => {
         if (error) {
           return res.status(400).json(error)
         }
-        return res
-          .status(200)
-          .json({ message: 'Like ajouté !' })
+        return res.status(200).json({ message: 'Like ajouté !' })
       }
     )
   }

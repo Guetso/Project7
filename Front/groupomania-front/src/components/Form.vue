@@ -79,7 +79,7 @@ export default {
         this.replyMessage(event);
       }
     },
-    modifyMyMessage(event) {
+    modifyMyMessage() {
       let payload = {
         id: this.currentId,
         message: this.message
@@ -89,8 +89,6 @@ export default {
           this.$store.dispatch("message/getAllMessage");
           this.$emit("modifyFeedback", data.message);
           this.$emit("changeView", "onDisplay");
-          this.message = { title: this.title, content: this.content };
-          event.target.reset();
           console.log(data);
           console.log("modify");
         },

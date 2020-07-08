@@ -45,8 +45,8 @@ export const message = {
         }
       )
     },
-    modifyMessage({ commit }, payload) {
-      return MessageService.modifyMessage(payload).then(
+    modifyMessage({ commit }, message) {
+      return MessageService.modifyMessage(message).then(
         (response) => {
           commit('modifyMessageSuccess')
           return Promise.resolve(response.data)

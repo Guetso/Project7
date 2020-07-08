@@ -13,9 +13,22 @@
       <aside>
         <button>LIKER</button>
         <button v-show="userId === currentUser" @click="modifyMessage" :data-id="messageId">Modifier</button>
-        <button v-show="userId === currentUser" @click.prevent="deleteMyMessage">Supprimer</button>
+        <button v-show="userId === currentUser || this.$store.state.auth.user.privilege === 'admin'" @click.prevent="deleteMyMessage">Supprimer</button>
         <button @click.prevent="replyMessage" :data-id="messageId" v-show="!isReply()">Commenter</button>
       </aside>
+
+      <Form
+        v-show="view ==='onReply'"
+        :title="title"
+        :content="content"
+        :messageId="messageId"
+        :userId="userId"
+        :onSubmit="formMethod.reply"
+        :messageParent="messageParent"
+        :currentId="currentId"
+        @changeView="changeView"
+        @modifyFeedback="passFeedback"
+      ></Form>
 
       <div id="reply">
         <slot></slot>
@@ -29,18 +42,6 @@
       :messageId="messageId"
       :userId="userId"
       :onSubmit="formMethod.modify"
-      :messageParent="messageParent"
-      @changeView="changeView"
-      @modifyFeedback="passFeedback"
-    ></Form>
-
-    <Form
-      v-show="view ==='onReply'"
-      :title="title"
-      :content="content"
-      :messageId="messageId"
-      :userId="userId"
-      :onSubmit="formMethod.reply"
       :messageParent="messageParent"
       :currentId="currentId"
       @changeView="changeView"
@@ -93,12 +94,12 @@ export default {
       this.view = View;
     },
     replyMessage(event) {
-      this.view = 'onReply'
-      this.currentId = parseInt(event.target.dataset.id, 10)
+      this.view = "onReply";
+      this.currentId = parseInt(event.target.dataset.id, 10);
     },
     modifyMessage(event) {
-      this.view = 'onModify'
-      this.currentId = parseInt(event.target.dataset.id, 10)
+      this.view = "onModify";
+      this.currentId = parseInt(event.target.dataset.id, 10);
     },
     deleteMyMessage() {
       let payload = this.messageId;

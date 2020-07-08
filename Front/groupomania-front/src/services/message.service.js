@@ -42,7 +42,8 @@ class MessageService {
       API_URL + id,
       {
         title: payload.message.title,
-        content: payload.message.content
+        content: payload.message.content,
+        idUSERS :store.state.auth.user.userId,
       },
       { headers: authHeader() }
     )

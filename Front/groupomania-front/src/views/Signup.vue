@@ -81,6 +81,7 @@ export default {
           this.showForm = false;
           this.successful = true;
           this.feedbacks.push(data.message);
+          window.alert(data.message)
         },
         error => {
           console.log(error.response);
