@@ -90,7 +90,6 @@ export default {
           this.$emit("modifyFeedback", data.message);
           this.$emit("changeView", "onDisplay");
           console.log(data);
-          console.log("modify");
         },
         error => {
           console.log(error);
@@ -105,7 +104,6 @@ export default {
           this.message = new Message("", "");
           event.target.reset();
           console.log(data);
-          console.log("post");
         },
         error => {
           console.log(error);
@@ -125,7 +123,6 @@ export default {
           this.message = new Message("", "", this.fromMessage);
           event.target.reset();
           console.log(data);
-          console.log("reply");
         },
         error => {
           console.log(error);

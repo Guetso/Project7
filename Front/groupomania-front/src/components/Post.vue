@@ -12,13 +12,13 @@
       </div>
       <aside>
         <button>LIKER</button>
-        <button v-show="userId === currentUser" @click="modifyMessage" :data-id="messageId">Modifier</button>
+        <button v-show="userId === currentUser" @click="modifyMessage" :data-id="messageId" >Modifier</button>
         <button v-show="userId === currentUser || this.$store.state.auth.user.privilege === 'admin'" @click.prevent="deleteMyMessage">Supprimer</button>
         <button @click.prevent="replyMessage" :data-id="messageId" v-show="!isReply()">Commenter</button>
       </aside>
 
       <Form
-        v-show="view ==='onReply'"
+        v-if="view ==='onReply'"
         :title="title"
         :content="content"
         :messageId="messageId"
@@ -28,7 +28,7 @@
         :currentId="currentId"
         @changeView="changeView"
         @modifyFeedback="passFeedback"
-      ></Form>
+      />
 
       <div id="reply">
         <slot></slot>
@@ -36,7 +36,7 @@
     </div>
 
     <Form
-      v-show="view ==='onModify'"
+      v-if="view ==='onModify'"
       :title="title"
       :content="content"
       :messageId="messageId"
@@ -46,7 +46,7 @@
       :currentId="currentId"
       @changeView="changeView"
       @modifyFeedback="passFeedback"
-    ></Form>
+    />
   </div>
 </template>
 
@@ -100,6 +100,7 @@ export default {
     modifyMessage(event) {
       this.view = "onModify";
       this.currentId = parseInt(event.target.dataset.id, 10);
+
     },
     deleteMyMessage() {
       let payload = this.messageId;

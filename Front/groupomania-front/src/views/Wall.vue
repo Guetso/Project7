@@ -106,7 +106,6 @@ export default {
       this.$router.push("/login");
     }
     this.$store.dispatch("message/getAllMessage");
-    console.log(this.$store.state.auth.user.privilege)
   }
 };
 </script>
