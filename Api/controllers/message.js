@@ -44,17 +44,34 @@ exports.getAllMessages = (req, res, next) => {
 }
 
 exports.modifyMessage = (req, res, next) => {
-  const updatedMessage = req.body
   conn.query(
-    `UPDATE messages SET ? WHERE idMESSAGES=${req.params.id}`,
-    updatedMessage,
+    `SELECT * FROM messages WHERE idMESSAGES=${req.params.id}`,
+    req.params.id,
     function (error, results, fields) {
       if (error) {
         return res.status(400).json(error)
       }
-      return res
-        .status(200)
-        .json({ message: 'Votre message a bien été modifié !' })
+      const token = req.headers.authorization.split(' ')[1]
+      const decodedToken = jwt.verify(token, config.secret)
+      const userId = decodedToken.userId
+      const role = decodedToken.role
+      const messageId = results[0].idUSERS
+      if (userId !== messageId && role !== 'admin') {
+        return res.status(401).json({ message: 'Accès non autorisé' })
+      }
+      const updatedMessage = req.body
+      conn.query(
+        `UPDATE messages SET ? WHERE idMESSAGES=${req.params.id}`,
+        updatedMessage,
+        function (error, results, fields) {
+          if (error) {
+            return res.status(400).json(error)
+          }
+          return res
+            .status(200)
+            .json({ message: 'Votre message a bien été modifié !' })
+        }
+      )
     }
   )
 }

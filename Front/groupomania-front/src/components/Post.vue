@@ -12,7 +12,7 @@
       </div>
       <aside>
         <button>LIKER</button>
-        <button v-show="userId === currentUser" @click="modifyMessage" :data-id="messageId" >Modifier</button>
+        <button v-show="userId === currentUser || this.$store.state.auth.user.privilege === 'admin'" @click="modifyMessage" :data-id="messageId" >Modifier</button>
         <button v-show="userId === currentUser || this.$store.state.auth.user.privilege === 'admin'" @click.prevent="deleteMyMessage">Supprimer</button>
         <button @click.prevent="replyMessage" :data-id="messageId" v-show="!isReply()">Commenter</button>
       </aside>

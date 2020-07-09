@@ -43,7 +43,6 @@ class MessageService {
       {
         title: payload.message.title,
         content: payload.message.content,
-        idUSERS :store.state.auth.user.userId,
       },
       { headers: authHeader() }
     )
