@@ -40,3 +40,9 @@ Pour lancer le serveur de développement
     npm run serve
 
 Par défaut le serveur client est accessible en local via le port 8080: http://localhost:8080/
+
+### Base de données  
+
+Les instructions pour importer la structure de la base de données sont accessible via :
+```
+cd MySql/groupomania_db_structure.sql
