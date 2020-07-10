@@ -2,13 +2,13 @@
   <div class="about">
     <h2>A propos de votre Espace Groupomania :</h2>
     <section>
-      <h3>Condition générale d'utilisation</h3>
+      <h3 id="CGU">Condition générale d'utilisation</h3>
       <p>
         L'accès à cet espace et son utilisation est strictement réservé au membre du personnel de Groupomania.
         <br />L'inscription à cet espace sous entend l'acceptation de la charte "Espace Groupomania" telle que décrite ci dessous.
       </p>
 
-      <h3>Charte de l'Espace Groupomania</h3>
+      <h3 id="charte">Charte de l'Espace Groupomania</h3>
       <ul>
         <li>Article 1: Le respect de toutes les personnes est primordial pour bien évoluer au sein du forum. Aucune insulte, moquerie en tout genre n'est donc tolérée, sous toutes les formes (Même pas sous forme de ***).</li>
         <br />
@@ -29,7 +29,7 @@
         <li>Article 9: Le règlement est susceptible de changer à tout instant, vous êtes donc tenu de vous informer des changements.</li>
       </ul>
 
-      <h3>Mentions Légales</h3>
+      <h3 id="legals">Mentions Légales</h3>
       <article>
         <aside>Dernière mise à jour le 06/03/2020</aside>
         <p>La société Groupomania est une société par actions simplifiée au capital de 100 00 € immatriculée au RCS de Paris sous le n. 100 288 000 et dont le siège social est situé au 1 rue Perceval 29000 Midgar, France (N° TVA intracommunautaire : FR 87 201 000 000). Ohmyfood est représentée par M. Cloud Strife, son Président.</p>

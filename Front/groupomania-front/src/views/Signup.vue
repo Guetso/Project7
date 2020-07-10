@@ -9,10 +9,13 @@
         name="email"
         v-model="user.email"
         placeholder="Email"
+        pattern=".+@groupomania.com"
         required
         maxlength="50"
       />
-
+      <aside>
+        <p>L'adresse mail doit être celle de votre mail interne</p>
+      </aside>
       <label for="userName">Nom d'utilisateur:</label>
       <input
         type="text"
@@ -22,7 +25,9 @@
         required
         maxlength="50"
       />
-
+      <aside>
+        <p>Le choix du nom d'utilisateur est libre, il doit néanmoins répondre aux exigences de  <router-link :to="{ name: 'About' }">la charte d'utilisation du service</router-link> </p>
+      </aside>
       <label for="password">Mot de passe:</label>
       <input
         type="password"
@@ -31,7 +36,17 @@
         placeholder="Password"
         pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,15})$"
       />
-
+      <aside class="passwordConditions" v-if="showForm">
+        Pour des raisons de sécurité votre mot de passe doit contenir au moins:
+        <br />
+        <ul>
+          <li>entre 8 à 15 caractères</li>
+          <li>une lettre minuscule</li>
+          <li>une lettre majuscule</li>
+          <li>un chiffre</li>
+          <li>un de ces caractères spéciaux: $ @ % * + - _ !</li>
+        </ul>
+      </aside>
       <button type="submit">Valider</button>
     </form>
 
@@ -44,18 +59,6 @@
         </p>
       </ul>
     </div>
-
-    <aside class="passwordConditions" v-if="showForm">
-      Pour des raisons de sécurité votre mot de passe doit contenir au moins:
-      <br />
-      <ul>
-        <li>entre 8 à 15 caractères</li>
-        <li>une lettre minuscule</li>
-        <li>une lettre majuscule</li>
-        <li>un chiffre</li>
-        <li>un de ces caractères spéciaux: $ @ % * + - _ !</li>
-      </ul>
-    </aside>
   </div>
 </template>
 
@@ -81,7 +84,7 @@ export default {
           this.showForm = false;
           this.successful = true;
           this.feedbacks.push(data.message);
-          window.alert(data.message)
+          window.alert(data.message);
         },
         error => {
           console.log(error.response);
