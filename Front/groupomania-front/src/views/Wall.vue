@@ -44,7 +44,6 @@
         </post>
       </section>
     </div>
-    <button @click="logOut">LOGOUT</button>
   </div>
 </template>
 
@@ -89,17 +88,13 @@ export default {
           replies.push(post);
         }
       }
-      replies.reverse()
+      replies.reverse();
       return replies;
     }
   },
   methods: {
     setFeedback(postFeedback) {
       this.feedbacks = postFeedback;
-    },
-    logOut() {
-      this.$store.dispatch("auth/logout");
-      this.$router.push("/");
     }
   },
   mounted() {
