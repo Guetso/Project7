@@ -89,6 +89,7 @@ export default {
           replies.push(post);
         }
       }
+      replies.reverse()
       return replies;
     }
   },
