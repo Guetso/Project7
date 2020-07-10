@@ -33,7 +33,7 @@ exports.replyMessage = (req, res, next) => {
 
 exports.getAllMessages = (req, res, next) => {
   conn.query(
-    'SELECT * , DATE_FORMAT(created_at,"%d/%m/%Y %H:%i:%s") AS created_at_formated  FROM groupomania.messages ORDER BY created_at DESC',
+    'SELECT messages.*, COUNT(likes.idUSERS) AS \'likes\', DATE_FORMAT(created_at,"%d/%m/%Y %H:%i:%s") AS created_at_formated FROM messages LEFT JOIN likes ON messages.idMESSAGES = likes.idMESSAGES GROUP BY messages.idMESSAGES ORDER BY created_at DESC',
     function (error, results, fields) {
       if (error) {
         return res.status(400).json(error)
@@ -109,18 +109,31 @@ exports.deleteMessage = (req, res, next) => {
 }
 
 exports.addLike = (req, res, next) => {
-  const like = req.body.like
-  if (like === 1) {
-    const likeMessage = req.body
-    conn.query(
-      `UPDATE messages SET ? WHERE idMESSAGES=${req.params.id}`,
-      +likeMessage,
-      function (error, results, fields) {
-        if (error) {
-          return res.status(400).json(error)
-        }
-        return res.status(200).json({ message: 'Like ajouté !' })
-      }
-    )
-  }
+  const like = req.body
+  conn.query('INSERT INTO likes SET ?', like, function (
+    error,
+    results,
+    fields
+  ) {
+    if (error) {
+      return res.status(400).json(error)
+    }
+    return res.status(201).json({ message: 'Votre like a bien été ajouté !' })
+  })
+}
+
+exports.removeLike = (req, res, next) => {
+  const token = req.headers.authorization.split(' ')[1]
+  const decodedToken = jwt.verify(token, config.secret)
+  const userId = decodedToken.userId
+  conn.query(`DELETE FROM likes WHERE idMESSAGES=${req.params.id} && idUSERS=${userId}`, function (
+    error,
+    results,
+    fields
+  ) {
+    if (error) {
+      return res.status(400).json(error)
+    }
+    return res.status(200).json({ message: 'Votre like a bien été supprimé !' })
+  })
 }

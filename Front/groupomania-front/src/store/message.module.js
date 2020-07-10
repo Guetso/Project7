@@ -6,9 +6,33 @@ export const message = {
     createdMessage: { status: '' },
     modifiedMessage: { status: '' },
     deletedMessage: { status: '' },
-    messages: ''
+    messages: '',
   },
   actions: {
+    addLike({ commit }, payload) {
+      return MessageService.addLike(payload).then(
+        (response) => {
+          commit('addLikeSuccess', response)
+          return Promise.resolve(response)
+        },
+        (error) => {
+          commit('addLikeFailure')
+          return Promise.reject(error)
+        }
+      )
+    },
+    removeLike({ commit }, payload) {
+      return MessageService.removeLike(payload).then(
+        (response) => {
+          commit('removeLikeSuccess', response)
+          return Promise.resolve(response)
+        },
+        (error) => {
+          commit('removeLikeFailure')
+          return Promise.reject(error)
+        }
+      )
+    },
     getAllMessage({ commit }) {
       return MessageService.getAllMessage().then(
         (response) => {
@@ -71,6 +95,10 @@ export const message = {
     }
   },
   mutations: {
+    removeLikeSuccess() {},
+    removeLikeFailure() {},
+    addLikeSuccess() {},
+    addLikeFailure() {},
     getAllMessageSuccess(state, response) {
       state.messages = response.data.results
     },

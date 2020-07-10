@@ -5,6 +5,20 @@ import store from '../store'
 const API_URL = 'http://localhost:3000/api/messages/'
 
 class MessageService {
+  addLike(payload) {
+    const id = payload
+    return axios.post(
+      API_URL + id + '/like',
+      { idUSERS: store.state.auth.user.userId, idMESSAGES: payload },
+      { headers: authHeader() }
+    )
+  }
+
+  removeLike(payload) {
+    const id = payload
+    return axios.delete(API_URL + id + '/like', { headers: authHeader() })
+  }
+
   createMessage(message) {
     return axios.post(
       API_URL + '',
@@ -42,7 +56,7 @@ class MessageService {
       API_URL + id,
       {
         title: payload.message.title,
-        content: payload.message.content,
+        content: payload.message.content
       },
       { headers: authHeader() }
     )

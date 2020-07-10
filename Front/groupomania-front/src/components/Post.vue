@@ -11,9 +11,17 @@
         <span>Likes: {{ likes }}</span>
       </div>
       <aside>
-        <button>LIKER</button>
-        <button v-show="userId === currentUser || this.$store.state.auth.user.privilege === 'admin'" @click="modifyMessage" :data-id="messageId" >Modifier</button>
-        <button v-show="userId === currentUser || this.$store.state.auth.user.privilege === 'admin'" @click.prevent="deleteMyMessage">Supprimer</button>
+        <button @click.prevent="addLike">J'aime !</button>
+        <button @click.prevent="removeLike">Je n'aime plus !</button>
+        <button
+          v-show="userId === currentUser || this.$store.state.auth.user.privilege === 'admin'"
+          @click="modifyMessage"
+          :data-id="messageId"
+        >Modifier</button>
+        <button
+          v-show="userId === currentUser || this.$store.state.auth.user.privilege === 'admin'"
+          @click.prevent="deleteMyMessage"
+        >Supprimer</button>
         <button @click.prevent="replyMessage" :data-id="messageId" v-show="!isReply()">Commenter</button>
       </aside>
 
@@ -61,8 +69,8 @@ export default {
     messageId: Number,
     userId: Number,
     createdAt: String,
-    likes: Number,
     currentUser: Number,
+    likes: Number,
     username: String,
     messageParent: Number,
     onModifyTitle: String,
@@ -76,10 +84,34 @@ export default {
         title: this.title,
         content: this.content
       },
-      formMethod: { modify: "modifyMyMessage", reply: "replyMessage" }
+      formMethod: { modify: "modifyMyMessage", reply: "replyMessage" },
     };
   },
   methods: {
+    addLike() {
+      let payload = this.messageId;
+      this.$store.dispatch("message/addLike", payload).then(
+        data => {
+          this.$store.dispatch("message/getAllMessage");
+          console.log(data);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    },
+    removeLike() {
+      let payload = this.messageId;
+      this.$store.dispatch("message/removeLike", payload).then(
+        data => {
+          this.$store.dispatch("message/getAllMessage");
+          console.log(data);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    },
     isReply() {
       if (this.messageParent === null || this.messageParent === undefined) {
         return false;
@@ -100,7 +132,6 @@ export default {
     modifyMessage(event) {
       this.view = "onModify";
       this.currentId = parseInt(event.target.dataset.id, 10);
-
     },
     deleteMyMessage() {
       let payload = this.messageId;
