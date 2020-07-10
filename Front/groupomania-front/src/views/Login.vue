@@ -69,8 +69,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-//scss directement
-@import "../sass/main";
-</style>

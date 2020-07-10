@@ -1,7 +1,12 @@
 @import "./base/typography/typBase";
+@import "./base/typography/typApp";
 @import "./base/typography/typNav";
 @import "./base/typography/typSignup";
 @import "./components/header";
 @import "./components/nav";
+@import "./components/form";
+@import "./components/post";
+@import "./pages/app";
 @import "./pages/home";
+@import "./pages/wall";
 @import "./pages/signupLogin";

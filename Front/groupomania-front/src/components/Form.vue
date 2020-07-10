@@ -135,17 +135,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.myMessageForm {
-  border: solid 1px red;
-  margin: 2rem 1rem;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  &__textarea {
-    width: 100%;
-    height: 5rem;
-  }
-}
-</style>

@@ -105,13 +105,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-#Wall {
-  margin-bottom: 2rem;
-  .myWall {
-    border: solid 1px green;
-    margin: 2rem 0;
-  }
-}
-</style>

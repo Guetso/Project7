@@ -1,0 +1,21 @@
+#Message {
+    .post {
+      border: 3px blue solid;
+      margin: 1rem;
+      &__body {
+        margin: 2rem;
+      }
+      &__infos {
+        display: flex;
+        justify-content: space-around;
+      }
+    }
+    #reply {
+      border: 2px rgb(0, 132, 255) solid;
+      #Message {
+        .post {
+          border: 1px rgb(0, 225, 255) solid;
+        }
+      }
+    }
+  }
