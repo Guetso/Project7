@@ -3,7 +3,7 @@
     <div class="post" v-show="view === 'onDisplay' || view === 'onReply'">
       <div class="post__body">
         <h3>{{ title}}</h3>
-        <p>{{ content }}</p>
+        <p v-html="content" v-linkified>{{ content }}</p>
       </div>
       <div class="post__infos">
         <span>De: {{ username }}</span>
@@ -60,6 +60,7 @@
 
 <script>
 import Form from "./Form";
+
 export default {
   name: "Message",
   components: { Form },

@@ -8,7 +8,11 @@
 
         <ul class="menu__list">
           <template v-for="item in navItems">
-            <li v-if="!item.needAuth || (item.needAuth && $store.state.auth.status.loggedIn)" @click="show = !show" :key="item.id">
+            <li
+              v-if="!item.needAuth || (item.needAuth && $store.state.auth.status.loggedIn)"
+              @click="show = !show"
+              :key="item.id"
+            >
               <router-link :to="{ name: item.name }">{{ item.text }}</router-link>
             </li>
           </template>
@@ -46,6 +50,7 @@ export default {
   },
   props: {
     scroll: Number,
+    appbarRect: {}
   },
   methods: {
     logOut() {
@@ -54,5 +59,14 @@ export default {
       console.log("logOut");
     }
   },
+  watch: {
+    appbarRect: function(newVal, oldVal) {
+      console.log('changed', newVal, oldVal)
+      this.appbarRect
+    },
+  },
+  mounted() {
+    console.log(this.appbarRect);
+  }
 };
 </script>

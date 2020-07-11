@@ -1,14 +1,14 @@
 <template>
   <v-app>
     <div id="app">
-      <v-app-bar color="primary" class="appBar" id="scroll-target" v-scroll="onScroll">
+      <v-app-bar color="primary" class="appBar" id="scroll-target" v-scroll="onScroll" ref="appbar">
         <img
           class="logo"
           alt="Groupomania logo"
           src="./assets/Groupomania_Logos/icon-left-font-monochrome-white.svg"
         />
       </v-app-bar>
-      <Nav :scroll="offsetTop"></Nav>
+      <Nav :scroll="offsetTop" :appbarRect="appbarRect"></Nav>
       <Header title="Bienvenue dans votre Espace Groupomania"></Header>
       <router-view />
     </div>
@@ -24,12 +24,19 @@ export default {
     Header
   },
   data: () => ({
-    offsetTop: 0
+    offsetTop: 0,
+    appbarRect: {},
   }),
   methods: {
     onScroll() {
       this.offsetTop++;
     }
+  },
+  mounted() {
+    const constraint = this.$refs.appbar.$el;
+    const rect = constraint.getBoundingClientRect();
+    this.appbarRect = rect;
+    console.log(this.appbarRect);
   }
 };
 </script>
