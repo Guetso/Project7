@@ -7,9 +7,11 @@
         </button>
 
         <ul class="menu__list">
-          <li v-for="item in navItems" :key="item.id" @click="show = !show">
-            <router-link :to="{ name: item.name }">{{ item.text }}</router-link>
-          </li>
+          <template v-for="item in navItems">
+            <li v-if="!item.needAuth || (item.needAuth && $store.state.auth.status.loggedIn)" @click="show = !show" :key="item.id">
+              <router-link :to="{ name: item.name }">{{ item.text }}</router-link>
+            </li>
+          </template>
           <li v-show="this.$store.state.auth.status.loggedIn === true">
             <button @click="logOut(); show =! show">Se deconnecter</button>
           </li>
@@ -37,17 +39,20 @@ export default {
       show: false,
       navItems: [
         { id: 1, text: "Accueil", name: "Home" },
-        { id: 2, text: "Votre compte", name: "Account" },
+        { id: 2, text: "Votre compte", name: "Account", needAuth: true },
         { id: 3, text: "A propos", name: "About" }
       ]
     };
+  },
+  props: {
+    scroll: Number,
   },
   methods: {
     logOut() {
       this.$store.dispatch("auth/logout");
       this.$router.push("/");
-      console.log('logOut')
+      console.log("logOut");
     }
-  }
+  },
 };
 </script>

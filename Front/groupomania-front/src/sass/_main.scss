@@ -2,6 +2,7 @@
 @import "./base/typography/typApp";
 @import "./base/typography/typNav";
 @import "./base/typography/typSignup";
+@import "./base/typography/typHeader";
 @import "./components/header";
 @import "./components/nav";
 @import "./components/form";
@@ -9,4 +10,6 @@
 @import "./pages/app";
 @import "./pages/home";
 @import "./pages/wall";
+@import "./pages/about";
+@import "./pages/account";
 @import "./pages/signupLogin";

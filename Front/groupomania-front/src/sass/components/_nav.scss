@@ -25,16 +25,20 @@
             z-index: 1;
             &__btn {
                 position: fixed;
-                top: 1rem;
+                top: 0.8rem;
+                &--solid {
+                    background-color: #fff;
+                    box-shadow: 0 0.125rem 0.75rem 0 rgba(30, 37, 45, 0.25);
+                    opacity: 0.8;
+                }
                 .open {
                     display: flex;
                     font-size: 1rem;
-                    background-color: #fff;
-                    border: solid 1px;
                     padding: 0.5rem;
                     cursor: pointer;
                     i {
                         margin-right: 10px;
+                        margin-top: 3.5px;
                     }
                 }
             }

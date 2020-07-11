@@ -1,13 +1,17 @@
 @media all and (max-width: 980px) {
-    nav{
-        .menu{
-            &__btn{
+    nav {
+        .menu {
+            &__btn {
+                &--solid {
+                    color: #2c3e50;
+                }
                 .open {
-                    font-family: 'nevis';
+                    font-family: "nevis";
+                    color: #fff;
                     text-transform: uppercase;
                 }
             }
-            &__list{
+            &__list {
                 a {
                     color: #000;
                 }

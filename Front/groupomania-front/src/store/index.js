@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import { auth } from './auth.module'
 import { message } from './message.module'
 import { user } from './user.module'
+import { navBtn } from './navBtn.module'
 
 Vue.use(Vuex)
 
@@ -10,6 +11,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     message,
-    user
+    user,
+    navBtn
   }
 })

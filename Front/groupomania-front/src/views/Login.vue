@@ -1,30 +1,39 @@
 <template>
   <div id="Login">
     <h2>{{ title }}</h2>
-    <form class="loginForm" @submit.prevent="loginMe" v-if="show">
-      <label for="userName">Nom d'utilisateur:</label>
-      <input
-        type="text"
-        name="userName"
-        v-model="user.username"
-        placeholder="User"
-        required
-        maxlength="50"
-      />
-      <label for="password">Mot de passe:</label>
-      <input
-        type="password"
-        name="password"
-        v-model="user.password"
-        placeholder="Password"
-        required
-      />
-      <button type="submit">Valider</button>
-    </form>
+
+    <v-form v-model="valid">
+      <v-container>
+        <v-text-field
+          v-model="user.username"
+          label="Nom d'utilisateur"
+          required
+          :rules="usernameRules"
+        ></v-text-field>
+        <v-text-field
+          type="password"
+          v-model="user.password"
+          label="Mot de passe"
+          required
+          :rules="passwordRules"
+        ></v-text-field>
+        <div class="formPanel">
+        <v-btn :disabled="!valid" color="primary" @click="loginMe">Valider</v-btn>
+        <router-link :to="{ name: 'Home' }">
+          <v-btn color="secondary">Retour</v-btn>
+        </router-link>
+        </div>
+      </v-container>
+    </v-form>
 
     <div class="messageService" v-if="feedbacks.length">
       <ul>
-        <p v-for="feedback in feedbacks" :key="feedback.message">{{ feedback.message }}</p>
+        <v-alert
+          type="error"
+          dismissible="true"
+          v-for="feedback in feedbacks"
+          :key="feedback.message"
+        >{{ feedback.message }}</v-alert>
       </ul>
     </div>
   </div>
@@ -37,10 +46,13 @@ export default {
   name: "Login",
   data() {
     return {
-      title: 'Se connecter à mon compte',
+      title: "Se connecter à mon compte",
       user: new User("", ""),
       feedbacks: [], // Nous permets d'afficher les informations suite à la soumission du formulaire, contient des objets au format {message : 'contenu du message'},il n'apparait que si non vide
-      show: true // Le formulaire doit il être affiché
+      show: true,
+      valid: false,
+      usernameRules: [v => !!v || "Indiquez votre nom d'utilisateur"],
+      passwordRules: [v => !!v || "Indiquez votre mot de passe"]
     };
   },
   computed: {

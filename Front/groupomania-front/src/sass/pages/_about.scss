@@ -1,0 +1,17 @@
+#About {
+    section {
+        h2 {
+            border: solid;
+            margin-bottom: 2rem;
+        }
+        article {
+            margin: 1rem;
+            h3{
+                text-align: center;
+            }
+        }
+        #charte, #contact {
+            text-align: justify;
+        }
+    }
+}

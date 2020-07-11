@@ -11,8 +11,8 @@
         <span>Likes: {{ likes }}</span>
       </div>
       <aside>
-        <button @click.prevent="addLike">J'aime !</button>
-        <button @click.prevent="removeLike">Je n'aime plus !</button>
+        <button v-if="myLikes === 0" @click.prevent="addLike">J'aime !</button>
+        <button v-if="myLikes != 0" @click.prevent="removeLike">Je n'aime plus !</button>
         <button
           v-show="userId === currentUser || this.$store.state.auth.user.privilege === 'admin'"
           @click="modifyMessage"
@@ -71,6 +71,7 @@ export default {
     createdAt: String,
     currentUser: Number,
     likes: Number,
+    myLikes: Number,
     username: String,
     messageParent: Number,
     onModifyTitle: String,

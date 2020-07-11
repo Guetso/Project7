@@ -11,29 +11,31 @@
     <div class="myWall">
       <section>
         <post
-          v-for="(post, index) in posts"
+          v-for="(paginedPost, index) in paginedPosts"
           :key="index"
-          :title="post.title"
-          :content="post.content"
-          :messageId="post.idMESSAGES"
-          :userId="post.idUSERS"
-          :createdAt="post.created_at_formated"
-          :likes=" post.likes"
+          :title="paginedPost.title"
+          :content="paginedPost.content"
+          :messageId="paginedPost.idMESSAGES"
+          :userId="paginedPost.idUSERS"
+          :createdAt="paginedPost.created_at_formated"
+          :likes=" paginedPost.likes"
+          :myLikes=" paginedPost.myLikes"
           :currentUser="currentUser.userId"
-          :messageParent="post.message_parent"
-          :username="post.username"
+          :messageParent="paginedPost.message_parent"
+          :username="paginedPost.username"
           @deleteFeedback="setFeedback"
           @modifyFeedback="setFeedback"
         >
           <div v-for="(reply, index) in replies" :key="index">
             <post
-              v-if="reply.message_parent === post.idMESSAGES"
+              v-if="reply.message_parent === paginedPost.idMESSAGES"
               :title="reply.title"
               :content="reply.content"
               :messageId="reply.idMESSAGES"
               :userId="reply.idUSERS"
               :createdAt="reply.created_at_formated"
               :likes="reply.likes"
+              :myLikes="reply.myLikes"
               :currentUser="currentUser.userId"
               :messageParent="reply.message_parent"
               :username="reply.username"
@@ -42,6 +44,7 @@
             ></post>
           </div>
         </post>
+        <button @click="nextPosts" v-if="hasNextPosts">Next</button>
       </section>
     </div>
   </div>
@@ -61,7 +64,8 @@ export default {
     return {
       showForm: true,
       feedbacks: null,
-      formMethod: "postMyMessage"
+      formMethod: "postMyMessage",
+      wallSize: 10
     };
   },
   computed: {
@@ -79,6 +83,12 @@ export default {
       }
       return posts;
     },
+    paginedPosts() {
+      return this.posts.slice(0, this.wallSize);
+    },
+    hasNextPosts() {
+      return this.wallSize < this.posts.length;
+    },
     replies() {
       const allMessages = this.$store.state.message.messages;
       const replies = [];
@@ -95,6 +105,11 @@ export default {
   methods: {
     setFeedback(postFeedback) {
       this.feedbacks = postFeedback;
+    },
+    nextPosts() {
+      setTimeout(() => {
+        this.wallSize += 5;
+      }, 1000);
     }
   },
   mounted() {

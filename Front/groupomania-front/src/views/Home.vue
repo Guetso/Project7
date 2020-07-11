@@ -1,7 +1,13 @@
 <template>
   <div class="home" v-bind:title="message">
-    <router-link :to="{ name: 'Login' }">Login</router-link>
-    <router-link :to="{ name: 'Signup' }">Signup</router-link>
+    <router-link :to="{ name: 'Login' }">
+      <v-btn>
+        Connexion
+      </v-btn>
+    </router-link>
+    <router-link :to="{ name: 'Signup' }">      <v-btn>
+        Inscription
+      </v-btn></router-link>
   </div>
 </template>
 

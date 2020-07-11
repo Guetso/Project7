@@ -1,9 +1,18 @@
 <template>
-  <div id="app">
-    <Nav></Nav>
-    <Header title="Bienvenue dans votre Espace Groupomania"></Header>
-    <router-view />
-  </div>
+  <v-app>
+    <div id="app">
+      <v-app-bar color="primary" class="appBar" id="scroll-target" v-scroll="onScroll">
+        <img
+          class="logo"
+          alt="Groupomania logo"
+          src="./assets/Groupomania_Logos/icon-left-font-monochrome-white.svg"
+        />
+      </v-app-bar>
+      <Nav :scroll="offsetTop"></Nav>
+      <Header title="Bienvenue dans votre Espace Groupomania"></Header>
+      <router-view />
+    </div>
+  </v-app>
 </template>
 
 <script>
@@ -13,6 +22,14 @@ export default {
   components: {
     Nav,
     Header
+  },
+  data: () => ({
+    offsetTop: 0
+  }),
+  methods: {
+    onScroll() {
+      this.offsetTop++;
+    }
   }
 };
 </script>

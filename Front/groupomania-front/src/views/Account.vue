@@ -1,5 +1,6 @@
 <template>
   <div id="Account">
+    <section class="myAccount">
     <h2>Votre compte</h2>
     <div>
       <h3>Votre nom d'utilisateur:</h3>
@@ -20,7 +21,8 @@
         <li v-for="(role, index) in currentUser.roles" :key="index">{{ role }}</li>
       </ul>
     </div>
-    <button @click="confirmDelete">Supprimer mon compte</button>
+    <v-btn color="secondary" @click="confirmDelete">Supprimer mon compte</v-btn>
+    </section>
   </div>
 </template>
 

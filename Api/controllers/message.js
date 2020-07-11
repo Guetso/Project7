@@ -32,8 +32,12 @@ exports.replyMessage = (req, res, next) => {
 }
 
 exports.getAllMessages = (req, res, next) => {
+  const token = req.headers.authorization.split(' ')[1]
+  const decodedToken = jwt.verify(token, config.secret)
+  const userId = decodedToken.userId
   conn.query(
-    'SELECT messages.*, COUNT(likes.idUSERS) AS \'likes\', DATE_FORMAT(created_at,"%d/%m/%Y %H:%i:%s") AS created_at_formated FROM messages LEFT JOIN likes ON messages.idMESSAGES = likes.idMESSAGES GROUP BY messages.idMESSAGES ORDER BY created_at DESC',
+    "SELECT messages.*, COUNT(likes.idUSERS) AS 'likes', COUNT(myLikes.idUSERS) AS 'myLikes', DATE_FORMAT(created_at,\"%d/%m/%Y %H:%i:%s\") AS created_at_formated FROM messages LEFT JOIN likes ON messages.idMESSAGES = likes.idMESSAGES LEFT JOIN likes myLikes ON messages.idMESSAGES = myLikes.idMESSAGES AND myLikes.idUSERS= ? GROUP BY messages.idMESSAGES ORDER BY created_at DESC",
+    [userId],
     function (error, results, fields) {
       if (error) {
         return res.status(400).json(error)
@@ -45,7 +49,7 @@ exports.getAllMessages = (req, res, next) => {
 
 exports.modifyMessage = (req, res, next) => {
   conn.query(
-    `SELECT * FROM messages WHERE idMESSAGES=${req.params.id}`,
+    'SELECT * FROM messages WHERE idMESSAGES=?',
     req.params.id,
     function (error, results, fields) {
       if (error) {
@@ -61,8 +65,8 @@ exports.modifyMessage = (req, res, next) => {
       }
       const updatedMessage = req.body
       conn.query(
-        `UPDATE messages SET ? WHERE idMESSAGES=${req.params.id}`,
-        updatedMessage,
+        'UPDATE messages SET ? WHERE idMESSAGES=?',
+        [updatedMessage, req.params.id],
         function (error, results, fields) {
           if (error) {
             return res.status(400).json(error)
@@ -78,7 +82,7 @@ exports.modifyMessage = (req, res, next) => {
 
 exports.deleteMessage = (req, res, next) => {
   conn.query(
-    `SELECT * FROM messages WHERE idMESSAGES=${req.params.id}`,
+    'SELECT * FROM messages WHERE idMESSAGES=?',
     req.params.id,
     function (error, results, fields) {
       if (error) {
@@ -126,14 +130,15 @@ exports.removeLike = (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1]
   const decodedToken = jwt.verify(token, config.secret)
   const userId = decodedToken.userId
-  conn.query(`DELETE FROM likes WHERE idMESSAGES=${req.params.id} && idUSERS=${userId}`, function (
-    error,
-    results,
-    fields
-  ) {
-    if (error) {
-      return res.status(400).json(error)
+  conn.query(
+    `DELETE FROM likes WHERE idMESSAGES=${req.params.id} && idUSERS=${userId}`,
+    function (error, results, fields) {
+      if (error) {
+        return res.status(400).json(error)
+      }
+      return res
+        .status(200)
+        .json({ message: 'Votre like a bien été supprimé !' })
     }
-    return res.status(200).json({ message: 'Votre like a bien été supprimé !' })
-  })
+  )
 }
