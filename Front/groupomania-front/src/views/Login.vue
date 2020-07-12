@@ -2,7 +2,7 @@
   <div id="Login">
     <h2>{{ title }}</h2>
 
-    <v-form v-model="valid">
+    <v-form class="form form--login"  v-model="valid">
       <v-container>
         <v-text-field
           v-model="user.username"

@@ -1,13 +1,13 @@
 <template>
-  <header class="hello">
+  <div class="upPage">
     <img class="logo" alt="Groupomania logo" src="../assets/Groupomania_Logos/icon.svg" />
     <h1>{{ title }}</h1>
-  </header>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "Header",
+  name: "UpPage",
   props: {
     title: {
       type: String,

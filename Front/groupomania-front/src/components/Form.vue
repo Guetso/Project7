@@ -1,29 +1,29 @@
 <template>
   <div id="Form">
-    <form class="myMessageForm" @submit.prevent="onSubmitMethod">
-      <label
-        for="myMessageTitle"
-        v-show="onSubmit != 'replyMessage' && isReply === false && messageParent === undefined"
-      >Titre de votre message:</label>
-      <input
-        type="text"
-        name="myMessageTitle"
-        v-show="onSubmit != 'replyMessage' && isReply === false"
-        :required="onSubmit != 'replyMessage' && isReply === false"
-        v-model="message.title"
-      />
-
-      <label for="myMessageContent">Votre message:</label>
-      <textarea
-        class="myMessageForm__textarea"
-        type="text"
-        name="myMessageContent"
-        required
-        v-model="message.content"
-      ></textarea>
-
-      <button type="submit">Valider</button>
-    </form>
+    <v-form class="form form--message" ref="form" v-model="valid">
+      <v-container>
+        <v-text-field
+          label="Titre de votre message"
+          v-model="message.title"
+          v-show="onSubmit != 'replyMessage' 
+        && isReply === false "
+          :required="onSubmit != 'replyMessage' && isReply === false"
+          :rules="titleRules"
+        ></v-text-field>
+        <v-textarea
+          :auto-grow="true"
+          label="Votre message"
+          class="myMessageForm__textarea"
+          required
+          v-model="message.content"
+          :rules="contentRules"
+        ></v-textarea>
+        <div class="formPanel">
+          <v-btn :disabled="!valid" color="primary" @click="onSubmitMethod">Valider</v-btn>
+          <v-btn color="secondary" @click="onCancelMethod">Annuler</v-btn>
+        </div>
+      </v-container>
+    </v-form>
   </div>
 </template>
 
@@ -44,7 +44,9 @@ export default {
   data() {
     return {
       message: "",
-      fromMessage: this.messageId
+      fromMessage: this.messageId,
+      valid: false,
+      contentRules: [v => !!v || "Votre message est vide !"]
     };
   },
   computed: {
@@ -54,6 +56,17 @@ export default {
       } else {
         return true;
       }
+    },
+    titleRules() {
+      if (
+        this.onSubmit != "replyMessage" &&
+        this.isReply === false &&
+        this.messageParent === undefined
+      ) {
+        return [v => !!v || "Renseigner un titre"];
+      } else {
+        return [];
+      }
     }
   },
   methods: {
@@ -62,10 +75,10 @@ export default {
         this.message = { title: this.title, content: this.content };
       }
       if (this.onSubmit === "postMyMessage") {
-        this.message = new Message("", "", "");
+        this.message = new Message(/* "", "", "" */);
       }
       if (this.onSubmit === "replyMessage") {
-        this.message = new Message("", "", this.fromMessage);
+        this.message = new Message("" /* , "", this.fromMessage */);
       }
     },
     onSubmitMethod(event) {
@@ -96,13 +109,14 @@ export default {
         }
       );
     },
-    postMyMessage(event) {
+    postMyMessage(/* event */) {
       this.$store.dispatch("message/createMessage", this.message).then(
         data => {
           this.$store.dispatch("message/getAllMessage");
           this.$emit("addFeedback", data.message);
-          this.message = new Message("", "");
-          event.target.reset();
+          /* this.message = new Message("", "") */
+          /* event.target.reset(); */
+          this.$refs.form.reset();
           console.log(data);
         },
         error => {
@@ -110,7 +124,7 @@ export default {
         }
       );
     },
-    replyMessage(event) {
+    replyMessage(/* event */) {
       let payload = {
         id: this.currentId,
         message: this.message
@@ -120,14 +134,27 @@ export default {
           this.$store.dispatch("message/getAllMessage");
           this.$emit("changeView", "onDisplay");
           this.$emit("addFeedback", data.message);
-          this.message = new Message("", "", this.fromMessage);
-          event.target.reset();
+          this.$refs.form.reset();
+          this.message = new Message("" /* , "", this.fromMessage */);
           console.log(data);
         },
         error => {
           console.log(error);
         }
       );
+    },
+    onCancelMethod () {
+      if (this.onSubmit === "postMyMessage") {
+        this.$refs.form.reset()
+      }
+      if (this.onSubmit === "modifyMyMessage") {
+        this.message = { title: this.title, content: this.content }
+        this.$emit("changeView", "onDisplay")
+      }
+      if (this.onSubmit === "replyMessage") {
+        this.$refs.form.reset()
+        this.$emit("changeView", "onDisplay")
+      }
     }
   },
   mounted() {

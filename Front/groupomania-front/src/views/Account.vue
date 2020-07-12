@@ -46,7 +46,6 @@ export default {
         data => {
           console.log(data);
           window.alert(data.message)
-          this.$router.push("/");
         },
         error => {
           console.log(error);
@@ -55,6 +54,11 @@ export default {
     }
   },
   mounted() {
+    if (!this.currentUser) {
+      this.$router.push("/");
+    }
+  },
+    updated() {
     if (!this.currentUser) {
       this.$router.push("/");
     }

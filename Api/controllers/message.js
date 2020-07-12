@@ -27,7 +27,7 @@ exports.replyMessage = (req, res, next) => {
     if (error) {
       return res.status(400).json(error)
     }
-    return res.status(201).json({ message: 'Votre réponse a bien été posté !' })
+    return res.status(201).json({ message: 'Votre réponse a bien été postée !' })
   })
 }
 

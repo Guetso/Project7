@@ -2,11 +2,13 @@
   <div id="Wall">
     <h2>Vous êtes connecté {{ currentUser.username }} !</h2>
 
-    <Form @addFeedback="setFeedback" :onSubmit="formMethod"></Form>
-
     <div class="messageService" v-if="feedbacks">
       <span>{{ feedbacks }}</span>
     </div>
+
+    <v-card>
+      <Form @addFeedback="setFeedback" :onSubmit="formMethod"></Form>
+    </v-card>
 
     <div class="myWall">
       <section>

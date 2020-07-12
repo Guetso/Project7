@@ -2,7 +2,7 @@
   <div id="Signup">
     <h2>{{ title }}</h2>
 
-    <v-form v-model="valid" v-if="showForm" class="signupForm">
+    <v-form v-model="valid" v-if="showForm" ref="form" class="form form--signup">
       <v-container>
         <v-text-field type="email" v-model="user.email" label="E-mail" required :rules="emailRules"></v-text-field>
         <aside>
@@ -54,7 +54,7 @@
         <p v-for="(feedback, index) in feedbacks" :key="index">
           {{ feedback.message }}
           <router-link v-if="successful" :to="{ name: 'Login' }">Se connecter</router-link>
-          <router-link v-if="!successful" :to="{ name: 'Signup' }">Recommencer</router-link>
+          <v-btn v-if="!successful" @click="retryRegister">Recommencer</v-btn>
         </p>
       </ul>
     </div>
@@ -125,6 +125,10 @@ export default {
           }
         }
       );
+    },
+    retryRegister() {
+      this.showForm = true
+      this.feedbacks = []
     }
   }
 };

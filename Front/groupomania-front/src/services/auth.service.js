@@ -32,7 +32,9 @@ class AuthService {
 
   delete(payload) {
     const id = payload
-    return axios.delete(API_URL + id, { headers: authHeader() })
+    return axios
+      .delete(API_URL + id, { headers: authHeader() })
+      .then(() => localStorage.removeItem('user'))
   }
 }
 
