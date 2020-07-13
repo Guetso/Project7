@@ -39,7 +39,7 @@
             <v-avatar class="post__sign__avatar" :color="avatarColor" size="28">{{ avatar }}</v-avatar>
             <v-list-item-content class="post__sign__name">{{ username }}</v-list-item-content>
 
-            <span>{{ createdAt }}</span>
+            <span>{{ date }}</span>
 
             <v-row align="center" justify="end">
               <v-btn icon>
@@ -87,6 +87,7 @@
 
 <script>
 import Form from "./Form";
+import moment from 'moment'
 
 export default {
   name: "Message",
@@ -138,6 +139,9 @@ export default {
     };
   },
   computed: {
+    date() {
+      return moment(new Date(this.createdAt)).fromNow()
+    },
     classPost() {
       if (this.isReply()) {
         return "post post__reply"
