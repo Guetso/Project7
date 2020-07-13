@@ -1,6 +1,6 @@
 <template >
   <div id="Message">
-    <v-card class="post post__origin" v-show="view === 'onDisplay' || view === 'onReply'">
+    <v-card :class="classPost" v-show="view === 'onDisplay' || view === 'onReply'">
       <v-row justify="space-between" align="center">
         <v-card-title>
           <v-avatar v-if="!isReply()">
@@ -36,7 +36,7 @@
       <v-card-actions>
         <v-list-item class="grow">
           <v-row align="center">
-            <v-avatar class="post__sign__avatar" color="indigo" size="28">{{ avatar }}</v-avatar>
+            <v-avatar class="post__sign__avatar" :color="avatarColor" size="28">{{ avatar }}</v-avatar>
             <v-list-item-content class="post__sign__name">{{ username }}</v-list-item-content>
 
             <span>{{ createdAt }}</span>
@@ -134,12 +134,26 @@ export default {
             this.userId === this.currentUser ||
             this.$store.state.auth.user.privilege === "admin"
         }
-      ]
+      ],
     };
   },
   computed: {
+    classPost() {
+      if (this.isReply()) {
+        return "post post__reply"
+      } else {
+        return "post post__origin"
+      }
+    },
     avatar() {
       return this.username.charAt(0).toUpperCase();
+    },
+    avatarColor() {
+      if (this.userId === this.currentUser) {
+        return "success"
+      } else {
+        return "indigo"
+      }
     },
     likeColor() {
       if (this.myLikes === 0) {

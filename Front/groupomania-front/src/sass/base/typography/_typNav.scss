@@ -1,20 +1,18 @@
-@media all and (max-width: 980px) {
-    nav {
-        .menu {
-            &__btn {
-                &--solid {
-                    color: #2c3e50;
-                }
-                .open {
-                    font-family: "nevis";
-                    color: #fff;
-                    text-transform: uppercase;
-                }
+nav {
+    .menu {
+        &__btn {
+            &--solid {
+                color: #2c3e50;
             }
-            &__list {
-                a {
-                    color: #000;
-                }
+            .open {
+                font-family: "nevis";
+                color: #fff;
+                text-transform: uppercase;
+            }
+        }
+        &__list {
+            a {
+                color: #000;
             }
         }
     }

@@ -14,8 +14,8 @@
     </div>
 
     <!-- <transition name="slide"> -->
-    <v-card v-show="showForm">
-      <Form @addFeedback="setFeedback" :onSubmit="formMethod"></Form>
+    <v-card class="wall__form" v-show="showForm">
+      <Form @addFeedback="setFeedback" @toggleForm="toggleForm" :onSubmit="formMethod"></Form>
     </v-card>
     <!-- </transition> -->
 

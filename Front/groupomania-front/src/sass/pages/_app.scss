@@ -5,3 +5,13 @@
     margin-top: 5px;
   }
 }
+
+
+.appBar {
+  .logo {
+    width: 40%;
+    @media all and (min-width: 768px) {
+      width: 20%;
+    }
+  }
+}

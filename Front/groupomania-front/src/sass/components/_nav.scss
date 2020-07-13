@@ -1,82 +1,95 @@
-@media all and (max-width: 980px) {
-    nav {
+nav {
+    display: flex;
+    justify-content: flex-end;
+    .slide-enter-active {
+        transition: all 0.5s ease;
+    }
+    .slide-leave-active {
+        transition: all 0.5s ease;
+    }
+    .slide-enter,
+    .slide-leave-to {
+        transform: translateX(100%);
+    }
+    .menu {
+        position: fixed;
         display: flex;
-        justify-content: flex-end;
-        .slide-enter-active {
-            transition: all 0.5s ease;
-        }
-        .slide-leave-active {
-            transition: all 0.5s ease;
-        }
-        .slide-enter,
-        .slide-leave-to {
-            transform: translateX(100%);
-        }
-        .menu {
+        flex-direction: column;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 50%;
+        max-width: 300px;
+        background-color: #fff;
+        z-index: 999;
+        &__btn {
             position: fixed;
-            display: flex;
-            flex-direction: column;
+            z-index: 998;
             top: 0;
-            bottom: 0;
-            right: 0;
-            width: 50%;
-            max-width: 300px;
-            background-color: #fff;
-            z-index: 1;
-            &__btn {
-                position: fixed;
-                top: 0;
-                &--solid {
-                    background-color: #fff;
-                    box-shadow: 0 0.125rem 0.75rem 0 rgba(30, 37, 45, 0.25);
-                    opacity: 0.8;
-                }
-                .open {
-                    display: flex;
-                    font-size: 1rem;
-                    padding: 0.5rem;
-                    cursor: pointer;
-                    i {
-                        margin-right: 10px;
-                        margin-top: 3.5px;
-                    }
-                }
+            &--solid {
+                background-color: #fff;
+                box-shadow: 0 0.125rem 0.75rem 0 rgba(30, 37, 45, 0.25);
+                opacity: 0.8;
             }
-            &__close {
-                display: block;
-                width: 15%;
-                text-align: center;
-                align-self: flex-end;
-                margin-top: 1em;
-                margin-right: 1em;
-                padding: 0;
-                border: solid 1px;
-                background: none;
-                line-height: 2.375em;
+            .open {
+                display: flex;
+                font-size: 1rem;
+                padding: 0.7rem;
+                background-color: rgba(19, 26, 92, 0.61);
+                &:hover {
+                    background-color: rgba(19, 26, 92, 1);
+                }
+                border-radius: 2rem;
+                z-index: 0;
                 cursor: pointer;
-            }
-            &__list {
-                li {
-                    a {
-                        text-decoration: none;
-                        display: block;
-                        width: 100%;
-                        height: 5vh;
-                        box-sizing: border-box;
-                    }
-                    &::after {
-                        border-top: solid 2px #e6e6e6;
-                        content: "";
-                        display: block;
-                        margin-top: 1.5rem;
-                        margin-bottom: 1rem;
-                    }
+                i {
+                    margin-right: 10px;
+                    margin-top: 3.5px;
                 }
             }
         }
-        ul {
-            list-style-type: none;
+        &__close {
+            display: block;
+            width: 15%;
+            text-align: center;
+            align-self: flex-end;
+            margin-top: 1em;
+            margin-right: 1em;
             padding: 0;
+            border: solid 1px;
+            background: none;
+            line-height: 2.375em;
+            cursor: pointer;
+        }
+        &__list {
+            li {
+                a {
+                    text-decoration: none;
+                    display: block;
+                    width: 100%;
+                    height: 5vh;
+                    box-sizing: border-box;
+                }
+                &::after {
+                    border-top: solid 2px #e6e6e6;
+                    content: "";
+                    display: block;
+                    margin-top: 1.5rem;
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+}
+
+@media all and (min-width: 768px) {
+    nav {
+        .menu {
+            display: flex;
         }
     }
 }

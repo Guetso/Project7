@@ -146,6 +146,7 @@ export default {
     onCancelMethod () {
       if (this.onSubmit === "postMyMessage") {
         this.$refs.form.reset()
+        this.$emit("toggleForm")
       }
       if (this.onSubmit === "modifyMyMessage") {
         this.message = { title: this.title, content: this.content }

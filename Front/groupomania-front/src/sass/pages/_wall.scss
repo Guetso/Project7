@@ -1,7 +1,7 @@
 #Wall {
   /* border: solid; */
   margin-bottom: 2rem;
-/*   .slide-enter-active {
+  /*   .slide-enter-active {
     transition: all 0.5s ease;
   }
   .slide-leave-active {
@@ -29,19 +29,29 @@
         }
       }
     }
+    &__form {
+      @media all and (min-width: 768px) {
+        width: 50%;
+        margin: auto auto 2rem auto;
+      }
+    }
   }
   .myWall {
     position: relative;
-    &__scrollUp{
+    &__scrollUp {
       position: fixed;
       z-index: 1;
       bottom: 0;
-      right:10px;
+      right: 10px;
       color: white;
       opacity: 0.5;
-      &:hover{
+      &:hover {
         opacity: 1;
       }
+    }
+    @media all and (min-width: 768px) {
+      width: 50%;
+      margin: auto;
     }
   }
 }

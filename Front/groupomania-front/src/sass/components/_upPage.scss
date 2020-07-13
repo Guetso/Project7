@@ -2,12 +2,10 @@
   margin-bottom: 5vh;
   .logo{
     width: 30%;
+    @media all and (min-width: 768px) {
+      width: 10%;
+    }
   }
 }
 
-.appBar {
-  .logo {
-    width: 40%;
-  }
-}
 
