@@ -1,16 +1,29 @@
 <template>
-  <div id="Wall">
-    <h2>Vous êtes connecté {{ currentUser.username }} !</h2>
+  <div id="Wall" class="wall">
+    <h2 class="wall__title">Vous êtes connecté {{ currentUser.username }} !</h2>
+
+    <div class="wall__panel">
+      <div class="wall__panel__share" @click="toggleForm">
+        <v-icon :x-large="true" color="secondary">mdi-pencil-circle</v-icon>
+        <span>Partagez...</span>
+      </div>
+    </div>
 
     <div class="messageService" v-if="feedbacks">
       <span>{{ feedbacks }}</span>
     </div>
 
-    <v-card>
+    <!-- <transition name="slide"> -->
+    <v-card v-show="showForm">
       <Form @addFeedback="setFeedback" :onSubmit="formMethod"></Form>
     </v-card>
+    <!-- </transition> -->
 
     <div class="myWall">
+      <v-btn fab color="secondary" class="myWall__scrollUp" @click="scrollUp">
+        <v-icon>mdi-chevron-up</v-icon>
+      </v-btn>
+
       <section>
         <post
           v-for="(paginedPost, index) in paginedPosts"
@@ -64,7 +77,7 @@ export default {
   },
   data() {
     return {
-      showForm: true,
+      showForm: false,
       feedbacks: null,
       formMethod: "postMyMessage",
       wallSize: 10
@@ -105,8 +118,19 @@ export default {
     }
   },
   methods: {
+    scrollUp() {
+      window.scrollTo(0, 0);
+    },
+    toggleForm() {
+      if (this.showForm === false) {
+        this.showForm = true;
+      } else {
+        this.showForm = false;
+      }
+    },
     setFeedback(postFeedback) {
       this.feedbacks = postFeedback;
+      this.showForm = false
     },
     nextPosts() {
       setTimeout(() => {

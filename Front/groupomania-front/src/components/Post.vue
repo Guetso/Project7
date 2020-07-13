@@ -1,29 +1,55 @@
 <template >
   <div id="Message">
-    <div class="post" v-show="view === 'onDisplay' || view === 'onReply'">
-      <div class="post__body">
-        <h3>{{ title}}</h3>
+    <v-card class="post post__origin" v-show="view === 'onDisplay' || view === 'onReply'">
+      <v-row justify="space-between" align="center">
+        <v-card-title>
+          <v-avatar v-if="!isReply()">
+            <img src="../assets/Groupomania_Logos/icon--white.svg" alt />
+          </v-avatar>
+          <h3 class="post__title">{{title}}</h3>
+        </v-card-title>
+
+        <v-menu>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon v-bind="attrs" v-on="on">
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(menuItem, i) in menuItems"
+              :key="i"
+              @click="menuItem.click"
+              :data-id="messageId"
+              v-show="menuItem.show"
+            >
+              <v-list-item-title>{{ menuItem.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-row>
+
+      <v-card-text class="post__content">
         <p v-html="content" v-linkified>{{ content }}</p>
-      </div>
-      <div class="post__infos">
-        <span>De: {{ username }}</span>
-        <span>Le: {{ createdAt }}</span>
-        <span>Likes: {{ likes }}</span>
-      </div>
-      <aside>
-        <button v-if="myLikes === 0" @click.prevent="addLike">J'aime !</button>
-        <button v-if="myLikes != 0" @click.prevent="removeLike">Je n'aime plus !</button>
-        <button
-          v-show="userId === currentUser || this.$store.state.auth.user.privilege === 'admin'"
-          @click="modifyMessage"
-          :data-id="messageId"
-        >Modifier</button>
-        <button
-          v-show="userId === currentUser || this.$store.state.auth.user.privilege === 'admin'"
-          @click.prevent="deleteMyMessage"
-        >Supprimer</button>
-        <button @click.prevent="replyMessage" :data-id="messageId" v-show="!isReply()">Commenter</button>
-      </aside>
+      </v-card-text>
+
+      <v-card-actions>
+        <v-list-item class="grow">
+          <v-row align="center">
+            <v-avatar class="post__sign__avatar" color="indigo" size="28">{{ avatar }}</v-avatar>
+            <v-list-item-content class="post__sign__name">{{ username }}</v-list-item-content>
+
+            <span>{{ createdAt }}</span>
+
+            <v-row align="center" justify="end">
+              <v-btn icon>
+                <v-icon class="post__li" :color="likeColor" @click="likeUnlike">mdi-heart</v-icon>
+              </v-btn>
+              <span class="subheading mr-2">{{likes}}</span>
+            </v-row>
+          </v-row>
+        </v-list-item>
+      </v-card-actions>
 
       <Form
         v-if="view ==='onReply'"
@@ -37,24 +63,25 @@
         @changeView="changeView"
         @modifyFeedback="passFeedback"
       />
-
-      <div id="reply">
+      <v-container>
         <slot></slot>
-      </div>
-    </div>
-
-    <Form
-      v-if="view ==='onModify'"
-      :title="title"
-      :content="content"
-      :messageId="messageId"
-      :userId="userId"
-      :onSubmit="formMethod.modify"
-      :messageParent="messageParent"
-      :currentId="currentId"
-      @changeView="changeView"
-      @modifyFeedback="passFeedback"
-    />
+      </v-container>
+      
+    </v-card>
+    <v-card>
+      <Form
+        v-if="view ==='onModify'"
+        :title="title"
+        :content="content"
+        :messageId="messageId"
+        :userId="userId"
+        :onSubmit="formMethod.modify"
+        :messageParent="messageParent"
+        :currentId="currentId"
+        @changeView="changeView"
+        @modifyFeedback="passFeedback"
+      />
+    </v-card>
   </div>
 </template>
 
@@ -87,9 +114,67 @@ export default {
         content: this.content
       },
       formMethod: { modify: "modifyMyMessage", reply: "replyMessage" },
+      menuItems: [
+        {
+          title: "Modifier",
+          click: this.modifyMessage,
+          show:
+            this.userId === this.currentUser ||
+            this.$store.state.auth.user.privilege === "admin"
+        },
+        {
+          title: "Commenter",
+          click: this.replyMessage,
+          show: this.isReply() === false
+        },
+        {
+          title: "Supprimer",
+          click: this.deleteMyMessage,
+          show:
+            this.userId === this.currentUser ||
+            this.$store.state.auth.user.privilege === "admin"
+        }
+      ]
     };
   },
+  computed: {
+    avatar() {
+      return this.username.charAt(0).toUpperCase();
+    },
+    likeColor() {
+      if (this.myLikes === 0) {
+        return "";
+      } else {
+        return "secondary";
+      }
+    }
+  },
   methods: {
+    likeUnlike() {
+      if (this.myLikes === 0) {
+        let payload = this.messageId;
+        this.$store.dispatch("message/addLike", payload).then(
+          data => {
+            this.$store.dispatch("message/getAllMessage");
+            console.log(data);
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      } else {
+        let payload = this.messageId;
+        this.$store.dispatch("message/removeLike", payload).then(
+          data => {
+            this.$store.dispatch("message/getAllMessage");
+            console.log(data);
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      }
+    },
     addLike() {
       let payload = this.messageId;
       this.$store.dispatch("message/addLike", payload).then(
@@ -127,13 +212,13 @@ export default {
     changeView(View) {
       this.view = View;
     },
-    replyMessage(event) {
+    replyMessage() {
       this.view = "onReply";
-      this.currentId = parseInt(event.target.dataset.id, 10);
+      this.currentId = this.messageId;
     },
-    modifyMessage(event) {
+    modifyMessage() {
       this.view = "onModify";
-      this.currentId = parseInt(event.target.dataset.id, 10);
+      this.currentId = this.messageId;
     },
     deleteMyMessage() {
       let payload = this.messageId;

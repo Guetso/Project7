@@ -16,5 +16,8 @@ export default new Vuetify({
         success: '#8bc34a'
       }
     }
+  },
+  icons: {
+    iconfont: 'mdiSvg'
   }
 })

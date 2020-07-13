@@ -1,7 +1,47 @@
 #Wall {
-    margin-bottom: 2rem;
-    .myWall {
-      border: solid 1px green;
-      margin: 2rem 0;
+  /* border: solid; */
+  margin-bottom: 2rem;
+/*   .slide-enter-active {
+    transition: all 0.5s ease;
+  }
+  .slide-leave-active {
+    transition: all 0.5s ease;
+  }
+  .slide-enter,
+  .slide-leave-to {
+    transform: translateY(100%);
+  } */
+  .wall {
+    &__title {
+      /* border:solid; */
+      margin-bottom: 2rem;
+    }
+    &__panel {
+      /* border: solid; */
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+      &__share {
+        /* border: solid; */
+        cursor: pointer;
+        span {
+          color: grey;
+        }
+      }
     }
   }
+  .myWall {
+    position: relative;
+    &__scrollUp{
+      position: fixed;
+      z-index: 1;
+      bottom: 0;
+      right:10px;
+      color: white;
+      opacity: 0.5;
+      &:hover{
+        opacity: 1;
+      }
+    }
+  }
+}

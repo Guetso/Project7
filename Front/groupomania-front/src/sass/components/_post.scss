@@ -1,21 +1,19 @@
 #Message {
-    .post {
-      border: 3px blue solid;
-      margin: 1rem;
-      &__body {
-        margin: 2rem;
+  .post {
+    &__origin {
+      margin-bottom: 1.5rem;
+    }
+    /* border: 3px blue solid; */
+    &__sign {
+      &__avatar {
+        color: white;
       }
-      &__infos {
-        display: flex;
-        justify-content: space-around;
+      &__name {
+        margin-left: 5px;
       }
     }
-    #reply {
-      border: 2px rgb(0, 132, 255) solid;
-      #Message {
-        .post {
-          border: 1px rgb(0, 225, 255) solid;
-        }
-      }
+    &__likeIcon {
+      cursor: pointer;
     }
   }
+}
