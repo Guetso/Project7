@@ -41,7 +41,7 @@
       <article id="legals">
         <h3>Mentions Légales</h3>
         <em>Dernière mise à jour le 06/03/2020</em>
-        <p>La société Groupomania est une société par actions simplifiée au capital de 100 00 € immatriculée au RCS de Paris sous le n. 100 288 000 et dont le siège social est situé au 1 rue Perceval 29000 Midgar, France (N° TVA intracommunautaire : FR 87 201 000 000). Ohmyfood est représentée par M. Cloud Strife, son Président.</p>
+        <p>La société Groupomania est une société par actions simplifiée au capital de 100 00 € immatriculée au RCS de Paris sous le n. 100 288 000 et dont le siège social est situé au 1 rue Perceval 29000 Midgar, France (N° TVA intracommunautaire : FR 87 201 000 000). Groupomania est représentée par M. Cloud Strife, son Président.</p>
         <p>Groupomania est une societé commerciale de distribution.</p>
         <p>Le Directeur de la Publication de la plateforme et le Directeur de l'Établissement Privé à Distance est M. Guetso.</p>Le site est hébergé par GitHub dont l’adresse est la suivante :
         <br />GitHub 29000 THEWORLD
@@ -54,7 +54,7 @@
         <ul>
           <li>Par téléphone : +33 1 00 50 00 50</li>
           <li>Par email : legalloisprovensal@gmail.com</li>
-          <li>Par courrier : Ohmyfood, 1 rue Perceval 29000 Midgar, France</li>
+          <li>Par courrier : Groupomania, 1 rue Perceval 29000 Midgar, France</li>
         </ul>
       </article>
 
@@ -66,7 +66,7 @@
           Vous bénéficiez d’un droit d’accès et de rectification aux informations qui vous concernent, que vous pouvez exercer par email à l’adresse suivante:
           <strong>data-protection@groupomania.com</strong>
           <br />ou par courrier à l'adresse suivante :
-          <strong>Ohmyfood, 1 rue Perceval 29000 Midgar, France</strong>. 
+          <strong>Groupomania, 1 rue Perceval 29000 Midgar, France</strong>. 
           <br> Vous pouvez également, pour des motifs légitimes, vous opposer au traitement des données vous concernant.
           Pour plus d’informations sur tous vos droits vous pouvez vous référer à notre Politique de Protection des Données Personnelles.
         </p>

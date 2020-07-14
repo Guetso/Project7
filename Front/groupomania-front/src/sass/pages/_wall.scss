@@ -1,16 +1,9 @@
 #Wall {
-  /* border: solid; */
   margin-bottom: 2rem;
-  /*   .slide-enter-active {
-    transition: all 0.5s ease;
+  @media all and (min-width:768px) {
+    width: 50%;
+    margin: auto auto auto 30%;
   }
-  .slide-leave-active {
-    transition: all 0.5s ease;
-  }
-  .slide-enter,
-  .slide-leave-to {
-    transform: translateY(100%);
-  } */
   .wall {
     &__title {
       /* border:solid; */
@@ -30,9 +23,13 @@
       }
     }
     &__form {
-      @media all and (min-width: 768px) {
-        width: 50%;
-        margin: auto auto 2rem auto;
+      position: relative;
+      margin: auto auto 2rem auto;
+      &__ico {
+        position: absolute;
+        color: white;
+        top:-20px;
+        
       }
     }
   }
@@ -48,10 +45,6 @@
       &:hover {
         opacity: 1;
       }
-    }
-    @media all and (min-width: 768px) {
-      width: 50%;
-      margin: auto;
     }
   }
 }

@@ -1,9 +1,16 @@
 .upPage {
   margin-bottom: 5vh;
+  @media all and (min-width:768px) {
+    width: 50%;
+    margin: auto auto auto 30%;
+  }
   .logo{
-    width: 30%;
+    width: 25%;
     @media all and (min-width: 768px) {
-      width: 10%;
+      width: 30%;
+    }
+    @media all and (min-width: 960px) {
+      width: 20%;
     }
   }
 }

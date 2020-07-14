@@ -1,6 +1,9 @@
 #Signup,
 #Login {
-    /* border: solid green; */
+    @media all and (min-width: 768px) {
+        width: 50%;
+        margin: 2% auto auto 30%;
+    }
     display: flex;
     flex-direction: column;
     h2 {

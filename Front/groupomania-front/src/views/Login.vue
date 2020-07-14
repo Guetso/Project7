@@ -2,7 +2,7 @@
   <div id="Login">
     <h2>{{ title }}</h2>
 
-    <v-form class="form form--login"  v-model="valid">
+    <v-form class="form form--login" v-model="valid">
       <v-container>
         <v-text-field
           v-model="user.username"
@@ -17,25 +17,25 @@
           required
           :rules="passwordRules"
         ></v-text-field>
+        <div class="messageService" v-if="feedbacks.length">
+          <ul>
+            <v-alert
+            close-delay="2000"
+              type="error"
+              dismissible
+              v-for="feedback in feedbacks"
+              :key="feedback.message"
+            >{{ feedback.message }}</v-alert>
+          </ul>
+        </div>
         <div class="formPanel">
-        <v-btn :disabled="!valid" color="primary" @click="loginMe">Valider</v-btn>
-        <router-link :to="{ name: 'Home' }">
-          <v-btn color="secondary">Retour</v-btn>
-        </router-link>
+          <v-btn :disabled="!valid" color="primary" @click="loginMe">Valider</v-btn>
+          <router-link :to="{ name: 'Home' }">
+            <v-btn color="secondary">Retour</v-btn>
+          </router-link>
         </div>
       </v-container>
     </v-form>
-
-    <div class="messageService" v-if="feedbacks.length">
-      <ul>
-        <v-alert
-          type="error"
-          dismissible="true"
-          v-for="feedback in feedbacks"
-          :key="feedback.message"
-        >{{ feedback.message }}</v-alert>
-      </ul>
-    </div>
   </div>
 </template>
 

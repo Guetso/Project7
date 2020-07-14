@@ -1,13 +1,16 @@
 <template>
   <v-app>
     <div id="app">
-
       <v-app-bar color="primary" class="appBar" id="scroll-target" v-scroll="onScroll" ref="appbar">
         <img
           class="logo"
           alt="Groupomania logo"
           src="./assets/Groupomania_Logos/icon-left-font-monochrome-white.svg"
         />
+        <v-row justify="end" align="center">
+          <span v-if="isLoggedIn" class="appBar__username">{{ username }}</span>
+          <v-avatar v-if="isLoggedIn" class="appBar__avatar" color="success" size="46">{{ avatar }}</v-avatar>
+        </v-row>
       </v-app-bar>
 
       <Nav :scroll="offsetTop" :appbarRect="appbarRect"></Nav>
@@ -16,7 +19,6 @@
         <UpPage title="Bienvenue dans votre Espace Groupomania"></UpPage>
         <router-view />
       </div>
-
     </div>
   </v-app>
 </template>
@@ -33,6 +35,17 @@ export default {
     offsetTop: 0,
     appbarRect: {}
   }),
+  computed: {
+    isLoggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    },
+    username() {
+      return this.$store.state.auth.user.username;
+    },
+    avatar() {
+      return this.$store.state.auth.user.username.charAt(0).toUpperCase();
+    }
+  },
   methods: {
     onScroll() {
       this.offsetTop++;

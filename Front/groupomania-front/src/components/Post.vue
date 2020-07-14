@@ -1,12 +1,20 @@
 <template >
   <div id="Message">
-    <v-card :class="classPost" v-show="view === 'onDisplay' || view === 'onReply'">
+    <v-card
+      :outlined="outlinedPost"
+      :class="classPost"
+      v-show="view === 'onDisplay' || view === 'onReply'"
+    >
       <v-row justify="space-between" align="center">
         <v-card-title>
-          <v-avatar v-if="!isReply()">
+          <v-avatar class="post__header__ico" v-if="!isReply()">
             <img src="../assets/Groupomania_Logos/icon--white.svg" alt />
           </v-avatar>
-          <h3 class="post__title">{{title}}</h3>
+          <h3 class="post__header__title">{{title}}</h3>
+          <span class="post__date--reply" v-if="isReply()">
+            <v-icon>mdi-clock-outline</v-icon>
+            {{ date }}
+          </span>
         </v-card-title>
 
         <v-menu>
@@ -29,8 +37,8 @@
         </v-menu>
       </v-row>
 
-      <v-card-text class="post__content">
-        <p v-html="content" v-linkified>{{ content }}</p>
+      <v-card-text>
+        <p class="post__content" v-html="content" v-linkified>{{ content }}</p>
       </v-card-text>
 
       <v-card-actions>
@@ -39,7 +47,10 @@
             <v-avatar class="post__sign__avatar" :color="avatarColor" size="28">{{ avatar }}</v-avatar>
             <v-list-item-content class="post__sign__name">{{ username }}</v-list-item-content>
 
-            <span>{{ date }}</span>
+            <span class="post__date" v-if="!isReply()">
+              <v-icon>mdi-clock-outline</v-icon>
+              {{ date }}
+            </span>
 
             <v-row align="center" justify="end">
               <v-btn icon>
@@ -61,12 +72,12 @@
         :messageParent="messageParent"
         :currentId="currentId"
         @changeView="changeView"
-        @modifyFeedback="passFeedback"
+        @modifyFeedback="passModifyFeedback"
+        @replyFeedback="passReplyFeedback"
       />
       <v-container>
         <slot></slot>
       </v-container>
-      
     </v-card>
     <v-card>
       <Form
@@ -79,7 +90,7 @@
         :messageParent="messageParent"
         :currentId="currentId"
         @changeView="changeView"
-        @modifyFeedback="passFeedback"
+        @modifyFeedback="passModifyFeedback"
       />
     </v-card>
   </div>
@@ -87,7 +98,7 @@
 
 <script>
 import Form from "./Form";
-import moment from 'moment'
+import moment from "moment";
 
 export default {
   name: "Message",
@@ -135,18 +146,26 @@ export default {
             this.userId === this.currentUser ||
             this.$store.state.auth.user.privilege === "admin"
         }
-      ],
+      ]
     };
   },
   computed: {
     date() {
-      return moment(new Date(this.createdAt)).fromNow()
+      moment.locale("fr");
+      return moment(new Date(this.createdAt)).fromNow();
+    },
+    outlinedPost() {
+      if (this.isReply()) {
+        return true;
+      } else {
+        return false;
+      }
     },
     classPost() {
       if (this.isReply()) {
-        return "post post__reply"
+        return "post post__reply";
       } else {
-        return "post post__origin"
+        return "post post__origin";
       }
     },
     avatar() {
@@ -154,9 +173,9 @@ export default {
     },
     avatarColor() {
       if (this.userId === this.currentUser) {
-        return "success"
+        return "success";
       } else {
-        return "indigo"
+        return "indigo";
       }
     },
     likeColor() {
@@ -174,7 +193,7 @@ export default {
         this.$store.dispatch("message/addLike", payload).then(
           data => {
             this.$store.dispatch("message/getAllMessage");
-            console.log(data);
+            console.log(data.data.message);
           },
           error => {
             console.log(error);
@@ -185,7 +204,7 @@ export default {
         this.$store.dispatch("message/removeLike", payload).then(
           data => {
             this.$store.dispatch("message/getAllMessage");
-            console.log(data);
+            console.log(data.data.message);
           },
           error => {
             console.log(error);
@@ -224,8 +243,11 @@ export default {
         return true;
       }
     },
-    passFeedback(formFeedback) {
+    passModifyFeedback(formFeedback) {
       this.$emit("modifyFeedback", formFeedback);
+    },
+    passReplyFeedback(formFeedback) {
+      this.$emit("replyFeedback", formFeedback);
     },
     changeView(View) {
       this.view = View;

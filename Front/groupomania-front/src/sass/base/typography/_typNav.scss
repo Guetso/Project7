@@ -11,8 +11,20 @@ nav {
             }
         }
         &__list {
-            a {
-                color: #000;
+            &__text {
+                color: grey;
+                text-transform: none;
+                font-size: 16px;
+            }
+            li:last-child {
+                color: grey;
+            }
+        }
+        &__control {
+            &__logout {
+                &:hover{
+                    color: white;
+                }
             }
         }
     }

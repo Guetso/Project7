@@ -1,6 +1,6 @@
 <template>
   <div id="Wall" class="wall">
-    <h2 class="wall__title">Vous êtes connecté {{ currentUser.username }} !</h2>
+    <h2 class="wall__title">Vous êtes connecté(e) {{ currentUser.username }} !</h2>
 
     <div class="wall__panel">
       <div class="wall__panel__share" @click="toggleForm">
@@ -9,12 +9,17 @@
       </div>
     </div>
 
-    <div class="messageService" v-if="feedbacks">
-      <span>{{ feedbacks }}</span>
-    </div>
+    <v-overlay :value="overlay">
+      <v-btn color="success" @click="overlay = false">{{feedbacks}}</v-btn>
+      <v-btn icon @click="overlay = false">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-overlay>
 
     <!-- <transition name="slide"> -->
+
     <v-card class="wall__form" v-show="showForm">
+      <v-icon class="wall__form__ico">mdi-triangle</v-icon>
       <Form @addFeedback="setFeedback" @toggleForm="toggleForm" :onSubmit="formMethod"></Form>
     </v-card>
     <!-- </transition> -->
@@ -40,6 +45,7 @@
           :username="paginedPost.username"
           @deleteFeedback="setFeedback"
           @modifyFeedback="setFeedback"
+          @replyFeedback="setFeedback"
         >
           <div v-for="(reply, index) in replies" :key="index">
             <post
@@ -80,7 +86,8 @@ export default {
       showForm: false,
       feedbacks: null,
       formMethod: "postMyMessage",
-      wallSize: 10
+      wallSize: 10,
+      overlay: false
     };
   },
   computed: {
@@ -130,7 +137,8 @@ export default {
     },
     setFeedback(postFeedback) {
       this.feedbacks = postFeedback;
-      this.showForm = false
+      this.showForm = false;
+      this.overlay = true;
     },
     nextPosts() {
       setTimeout(() => {

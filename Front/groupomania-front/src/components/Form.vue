@@ -133,7 +133,7 @@ export default {
         data => {
           this.$store.dispatch("message/getAllMessage");
           this.$emit("changeView", "onDisplay");
-          this.$emit("addFeedback", data.message);
+          this.$emit("replyFeedback", data.message);
           this.$refs.form.reset();
           this.message = new Message("" /* , "", this.fromMessage */);
           console.log(data);

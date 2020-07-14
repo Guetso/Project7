@@ -1,7 +1,7 @@
 <template>
   <nav id="navbar">
     <transition name="slide">
-      <div class="menu" v-if="show">
+      <div class="menu" v-show="show">
         <button class="menu__close" @click="show = !show">
           <i class="fas fa-times"></i>
         </button>
@@ -13,11 +13,24 @@
               @click="show = !show"
               :key="item.id"
             >
-              <router-link :to="{ name: item.name }">{{ item.text }}</router-link>
+              <router-link class="menu__list__link" :to="{ name: item.name }">
+                <v-btn rounded text class="menu__list__btn">
+                  <v-icon class="menu__list__ico" color="grey">mdi-{{item.icon}}</v-icon>
+                  <div class="menu__list__text" >{{ item.text }}</div>
+                </v-btn>
+              </router-link>
             </li>
           </template>
-          <li v-show="this.$store.state.auth.status.loggedIn === true">
-            <button @click="logOut(); show =! show">Se deconnecter</button>
+           
+          <li class="menu__control" v-show="this.$store.state.auth.status.loggedIn === true">
+
+            <div class="menu__control__logout">
+
+            <v-icon>mdi-power</v-icon>
+           <button @click="logOut(); show =! show">Se deconnecter</button>
+
+           </div>
+           
           </li>
         </ul>
       </div>
@@ -42,10 +55,17 @@ export default {
     return {
       show: false,
       navItems: [
-        { id: 1, text: "Accueil", name: "Home" },
-        { id: 2, text: "Votre compte", name: "Account", needAuth: true },
-        { id: 3, text: "A propos", name: "About" }
-      ]
+        { id: 1, text: "Accueil", name: "Home", icon: "message" },
+        {
+          id: 2,
+          text: "Votre compte",
+          name: "Account",
+          icon: "account",
+          needAuth: true
+        },
+        { id: 3, text: "A propos", name: "About", icon: "information" }
+      ],
+      activeClass: "active"
     };
   },
   props: {
@@ -61,9 +81,9 @@ export default {
   },
   watch: {
     appbarRect: function(newVal, oldVal) {
-      console.log('changed', newVal, oldVal)
-      this.appbarRect
-    },
+      console.log("changed", newVal, oldVal);
+      this.appbarRect;
+    }
   },
   mounted() {
     console.log(this.appbarRect);
