@@ -24,6 +24,8 @@
     </v-card>
     <!-- </transition> -->
 
+    <AdminPanel class="wall__adminPanel" v-if="isAdmin"></AdminPanel>
+
     <div class="myWall">
       <v-btn fab color="secondary" class="myWall__scrollUp" @click="scrollUp">
         <v-icon>mdi-chevron-up</v-icon>
@@ -74,12 +76,14 @@
 <script>
 import Form from "../components/Form";
 import Post from "../components/Post";
+import AdminPanel from "../components/AdminPanel.vue"
 
 export default {
   name: "Wall",
   components: {
     Form,
-    Post
+    Post,
+    AdminPanel
   },
   data() {
     return {
@@ -93,6 +97,13 @@ export default {
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
+    },
+    isAdmin() {
+      if (this.$store.state.auth.user.privilege === 'admin') {
+        return true
+      } else {
+        return false
+      }
     },
     posts() {
       const allMessages = this.$store.state.message.messages;

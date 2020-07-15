@@ -1,6 +1,7 @@
 <template >
   <div id="Message">
     <v-card
+      :id="messageId"
       :outlined="outlinedPost"
       :class="classPost"
       v-show="view === 'onDisplay' || view === 'onReply'"

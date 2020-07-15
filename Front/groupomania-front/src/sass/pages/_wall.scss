@@ -5,6 +5,9 @@
     margin: auto auto auto 30%;
   }
   .wall {
+    &__adminPanel {
+      margin-bottom: 3rem;
+    }
     &__title {
       /* border:solid; */
       margin-bottom: 2rem;
