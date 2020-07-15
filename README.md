@@ -31,7 +31,7 @@ Pour lancer le serveur de développement
 
 * Back:
 
-Nécessite de créer un fichier "jwt.secret.js" et d'y saisir une clé
+Nécessite de créer un fichier "jwt.secret.js" dans Api/config/ et d'y saisir une clé
     
     ```
     module.exports = {
