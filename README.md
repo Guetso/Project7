@@ -26,15 +26,29 @@ Le projet consiste à construire un réseau social interne pour les employés de
 * Implémenter un stockage de données sécurisé en utilisant SQL
 * Authentifier un utilisateur et maintenir sa session
 
-### Serveur de développement 
+### Serveur de développement local
 Pour lancer le serveur de développement
 
 * Back
+Nécessite de créer un fichier "jwt.secret.js" et d'y saisir une clé
+    ```
+    module.exports = {
+      secret: "(votre clé)"
+    }
+    
+Puis lancer la commande suivante :
     ``` 
     cd api
     nodemon server
 
 * Front
+Nécessite de créer un fichier .env dans "Front/groupomania-front/" :
+    ```
+    API_ENV=localhost
+    API_PORT=3000
+
+
+Puis lancer la commande suivante :
     ``` 
     cd Front/groupomania-front
     npm run serve
@@ -46,3 +60,12 @@ Par défaut le serveur client est accessible en local via le port 8080: http://l
 Les instructions pour importer la structure de la base de données sont accessible via :
 ```
 cd MySql/groupomania_db_structure.sql
+
+Nécessite de créer un fichier .env dans "Api/" :
+
+```
+DB_HOST=localhost
+DB_USER="username du serveur SQL"
+DB_PASS="password du serveur SQL
+DB_DATABASE=groupomania
+

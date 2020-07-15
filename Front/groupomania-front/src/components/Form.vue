@@ -75,10 +75,10 @@ export default {
         this.message = { title: this.title, content: this.content };
       }
       if (this.onSubmit === "postMyMessage") {
-        this.message = new Message(/* "", "", "" */);
+        this.message = new Message();
       }
       if (this.onSubmit === "replyMessage") {
-        this.message = new Message("" /* , "", this.fromMessage */);
+        this.message = new Message("");
       }
     },
     onSubmitMethod(event) {
@@ -109,13 +109,11 @@ export default {
         }
       );
     },
-    postMyMessage(/* event */) {
+    postMyMessage() {
       this.$store.dispatch("message/createMessage", this.message).then(
         data => {
           this.$store.dispatch("message/getAllMessage");
           this.$emit("addFeedback", data.message);
-          /* this.message = new Message("", "") */
-          /* event.target.reset(); */
           this.$refs.form.reset();
           console.log(data);
         },
@@ -124,7 +122,7 @@ export default {
         }
       );
     },
-    replyMessage(/* event */) {
+    replyMessage() {
       let payload = {
         id: this.currentId,
         message: this.message
@@ -135,7 +133,7 @@ export default {
           this.$emit("changeView", "onDisplay");
           this.$emit("replyFeedback", data.message);
           this.$refs.form.reset();
-          this.message = new Message("" /* , "", this.fromMessage */);
+          this.message = new Message("");
           console.log(data);
         },
         error => {
