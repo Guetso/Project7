@@ -39,9 +39,9 @@ Nécessite de créer un fichier "jwt.secret.js" dans Api/config/ et d'y saisir u
     }
     
 Puis lancer la commande suivante :
-    
-    ``` 
-    cd api
+     
+    cd Api
+    npm install
     nodemon server
 
 * Front:
@@ -57,6 +57,7 @@ Puis lancer la commande suivante :
     
     ``` 
     cd Front/groupomania-front
+    npm install
     npm run serve
 
 Par défaut le serveur client est accessible en local via le port 8080: http://localhost:8080/
