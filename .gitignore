@@ -3,6 +3,7 @@ node_modules
 /dist
 .env
 jwt.secret.js
+Front/groupomania-front/dist
 
 # local env files
 .env.local

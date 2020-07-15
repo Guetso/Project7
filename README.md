@@ -29,7 +29,8 @@ Le projet consiste à construire un réseau social interne pour les employés de
 ### Serveur de développement local
 Pour lancer le serveur de développement
 
-* Back
+* Back:
+
 Nécessite de créer un fichier "jwt.secret.js" et d'y saisir une clé
     ```
     module.exports = {
@@ -41,7 +42,8 @@ Puis lancer la commande suivante :
     cd api
     nodemon server
 
-* Front
+* Front:
+
 Nécessite de créer un fichier .env dans "Front/groupomania-front/" :
     ```
     API_ENV=localhost
@@ -58,14 +60,14 @@ Par défaut le serveur client est accessible en local via le port 8080: http://l
 ### Base de données  
 
 Les instructions pour importer la structure de la base de données sont accessible via :
-```
-cd MySql/groupomania_db_structure.sql
+    ```
+    cd MySql/groupomania_db_structure.sql
 
 Nécessite de créer un fichier .env dans "Api/" :
 
-```
-DB_HOST=localhost
-DB_USER="username du serveur SQL"
-DB_PASS="password du serveur SQL
-DB_DATABASE=groupomania
+    ```
+    DB_HOST=localhost
+    DB_USER="username du serveur SQL"
+    DB_PASS="password du serveur SQL
+    DB_DATABASE=groupomania
 
