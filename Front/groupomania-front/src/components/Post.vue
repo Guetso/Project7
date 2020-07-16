@@ -126,8 +126,12 @@ export default {
         title: this.title,
         content: this.content
       },
-      formMethod: { modify: "modifyMyMessage", reply: "replyMessage" },
-      menuItems: [
+      formMethod: { modify: "modifyMyMessage", reply: "replyMessage" }
+    };
+  },
+  computed: {
+    menuItems() {
+      return [
         {
           title: "Modifier",
           click: this.modifyMessage,
@@ -147,10 +151,8 @@ export default {
             this.userId === this.currentUser ||
             this.$store.state.auth.user.privilege === "admin"
         }
-      ]
-    };
-  },
-  computed: {
+      ];
+    },
     date() {
       moment.locale("fr");
       return moment(new Date(this.createdAt)).fromNow();

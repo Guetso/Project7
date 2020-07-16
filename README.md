@@ -69,6 +69,6 @@ Nécessite de créer un fichier .env dans "Api/" :
 
     DB_HOST=localhost
     DB_USER="username du serveur SQL"
-    DB_PASS="password du serveur SQL
+    DB_PASS="password du serveur SQL"
     DB_DATABASE=groupomania
 
